@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>EdvardCode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #b30000 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        header {
+            background: rgba(26,26,26,0.95);
+            box-shadow: 0 2px 12px #b3000033;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            padding: 18px 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 22px;
+            border-radius: 30px;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        nav a.active, nav a:hover {
+            background: #b30000;
+            color: #fff;
+            box-shadow: 0 2px 8px #b3000033;
+        }
+        main {
+            max-width: 900px;
+            margin: 50px auto 0 auto;
+            background: rgba(34,34,34,0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px #b3000033;
+            padding: 40px 32px 32px 32px;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 2.2em;
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 18px #b30000, 0 0 2px #fff;
+        }
+        .section {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 350px;
+            text-align: center;
+            animation: fadeIn 1.2s;
+        }
+        .welcome h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.2em;
+        }
+        .welcome .slogan {
+            font-size: 1.2em;
+            color: #ff1a1a;
+            margin-bottom: 1.5em;
+            font-style: italic;
+        }
+        .welcome .btn {
+            font-size: 1.2em;
+            padding: 16px 40px;
+            margin-top: 1em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+        .work-card {
+            background: #222;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #b3000033;
+            padding: 18px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .work-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 8px 24px #b3000055;
+        }
+        .work-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #b30000;
+        }
+        .work-card h3 {
+            margin: 10px 0 8px 0;
+            font-size: 1.15em;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px 6px 0 0;
+            padding: 10px 22px;
+            background: #b30000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 2px 8px #b3000033;
+        }
+        .btn i {
+            margin-right: 6px;
+        }
+        .btn:hover {
+            background: #ff1a1a;
+            transform: scale(1.05);
+        }
+        .contacts-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .contacts-list li {
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+        .contacts-list a {
+            color: #ff1a1a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contacts-list a:hover {
+            text-decoration: underline;
+        }
+        .yt-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 28px;
+            background: #b30000;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 8px #b3000033;
+        }
+        .yt-link i {
+            margin-right: 8px;
+        }
+        .yt-link:hover {
+            background: #ff1a1a;
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            color: #bbb;
+            margin: 40px 0 10px 0;
+            font-size: 1em;
+            letter-spacing: 1px;
+        }
+        .footer-socials a {
+            color: #b30000;
+            margin: 0 8px;
+            font-size: 1.3em;
+            transition: color 0.2s;
+        }
+        .footer-socials a:hover {
+            color: #ff1a1a;
+        }
+        @media (max-width: 600px) {
+            main { padding: 18px 4vw; }
+            nav { gap: 10px; }
+            .works-grid { grid-template-columns: 1fr; }
+        }
+        #particles-js {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <header>
+        <nav>
+            <a href="#" class="tab active" data-tab="welcome"><i class="fa-solid fa-house"></i>Главная</a>
+            <a href="#" class="tab" data-tab="works"><i class="fa-solid fa-briefcase"></i>Мои работы</a>
+            <a href="#" class="tab" data-tab="contacts"><i class="fa-solid fa-address-book"></i>Контакты</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Welcome -->
+        <div id="welcome" class="section active">
+            <div class="welcome">
+                <h1>Привет!<br>Я — <span style="color:#b30000;">EdvardCode</span></h1>
+                <p>Здесь собраны мои работы, которые я отправляю на канал.<br>Возможно, они появятся в одном из выпусков!</p>
+                <button class="btn" id="goToWorks"><i class="fa-solid fa-arrow-right"></i> Смотреть работы</button>
+            </div>
+        </div>
+        <!-- Works -->
+        <div id="works" class="section">
+            <h2><i class="fa-solid fa-briefcase"></i> Мои работы</h2>
+            <div class="works-grid">
+                <div class="work-card">
+                    <img src="https://placehold.co/80x80/1a1a1a/b30000?text=Minecraft" alt="EdLauncher">
+                    <h3>Работа #1</h3>
+                    <p>EdLauncher.</p>
+                    <a href="https://mega.nz/file/HAsTHaQQ#_n8m2WO9LfjWXFH7ZMmRPSguqCvv-xAwKpw0EAD4UQs" class="btn" target="_blank"><i class="fa-solid fa-download"></i> Скачать</a>
+                    <a href="https://youtube.com/" class="btn" target="_blank"><i class="fa-brands fa-youtube"></i> Видео</a>
+                </div>
+                <div class="work-card">
+                    <img src="https://placehold.co/80x80/1a1a1a/b30000?text=GTA6" alt="GTA6">
+                    <h3>Работа #2</h3>
+                    <p>В РАЗРАБОТКЕ.</p>
+                    <a href="https://mega.nz/" class="btn" target="_blank"><i class="fa-solid fa-download"></i> Скачать</a>
+                    <a href="https://youtube.com/" class="btn" target="_blank"><i class="fa-brands fa-youtube"></i> Видео</a>
+                </div>
+                <div class="work-card">
+                    <img src="https://placehold.co/80x80/1a1a1a/b30000?text=Antivirus" alt="Антивирус">
+                    <h3>Работа #3</h3>
+                    <p>В РАЗРАБОТКЕ.</p>
+                    <a href="https://mega.nz/" class="btn" target="_blank"><i class="fa-solid fa-download"></i> Скачать</a>
+                    <a href="https://youtube.com/" class="btn" target="_blank"><i class="fa-brands fa-youtube"></i> Видео</a>
+                </div>
+            </div>
+        </div>
+        <!-- Contacts -->
+        <div id="contacts" class="section">
+            <h2><i class="fa-solid fa-address-card"></i> Контакты</h2>
+            <ul class="contacts-list">
+                <li><i class="fa-brands fa-telegram"></i> Telegram: <a href="https://t.me/EdvardCode" target="_blank">Перейти</a></li>
+                <li><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:frest755@gmail.com">Перейти</a></li>
+				<li><i class="fa-brands fa-github"></i> GitHub: <a href="https://github.com/FresenBer4ik">Перейти</a></li>
+            </ul>
+            <a href="https://www.youtube.com/@edvardo_yt" class="yt-link" target="_blank"><i class="fa-brands fa-youtube"></i> Мой Канал</a>
+			<a href="https://nedohackers.site" class="yt-link" target="_blank"><i class="fa-brands fa-youtube"></i> Сайт НЕДОХАКЕРЫ</a>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-socials">
+            <a href="https://t.me/EdvardCode" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.youtube.com/@nedohackerslite" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+        <div style="margin-top:8px;">&copy; 2025 | <span style="color:#b30000;">EdvardCode</span></div>Все права защищены
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Переключение вкладок с анимацией
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                setTimeout(() => {
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                }, 100);
+            });
+        });
+        // Welcome кнопка "Смотреть работы"
+        document.getElementById('goToWorks').onclick = function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.tab[data-tab="works"]').classList.add('active');
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById('works').classList.add('active');
+            }, 100);
+        };
+        // Particles.js фон
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#b30000" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 4, "random": true },
+                "line_linked": { "enable": true, "distance": 120, "color": "#b30000", "opacity": 0.3, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" }
+                },
+                "modes": {
+                    "repulse": { "distance": 80, "duration": 0.4 },
+                    "push": { "particles_nb": 4 }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html
