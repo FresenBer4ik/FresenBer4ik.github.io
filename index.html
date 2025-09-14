@@ -207,10 +207,10 @@
     typeWriter();
 
     // Защита паролем для кнопок с классом protected-download
-    const SECRET_PASSWORD = "edvard123";
+    const SECRET_PASSWORD = "edvardcodehack";
     document.querySelectorAll(".protected-download").forEach(btn=>{
       btn.addEventListener("click",()=>{
-        const input=prompt("Введите пароль для скачивания: (Чтобы узнать пароль напишите в телеграм)");
+        const input=prompt("Введите пароль для скачивания: (Временный пароль: edvardcodehack)");
         if(input===SECRET_PASSWORD){
           const link=btn.getAttribute("data-link");
           window.open(link,"_blank");
@@ -222,3 +222,4 @@
   </script>
 </body>
 </html>
+
