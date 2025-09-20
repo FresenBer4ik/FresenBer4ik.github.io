@@ -5,30 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Админка — EdvardCode</title>
   <style>
-    body{background:#111;color:#fff;font-family:sans-serif;padding:40px;}
+    body{background:#111;color:#eee;font-family:sans-serif;padding:30px;}
     h1{color:#f33;}
-    textarea{width:100%;height:300px;margin:20px 0;background:#000;color:#0f0;font-family:monospace;border:1px solid #333;}
-    button{padding:10px 25px;background:#f00;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+    form{margin:20px 0;padding:20px;background:#1a1a1a;border-radius:10px;max-width:600px;}
+    label{display:block;margin-top:10px;font-weight:bold;}
+    input,textarea,select{
+      width:100%;padding:8px;margin-top:5px;border-radius:5px;border:1px solid #333;
+      background:#000;color:#fff;font-family:inherit;
+    }
+    button{margin-top:15px;padding:10px 20px;background:#f00;color:#fff;border:none;
+      border-radius:5px;cursor:pointer;font-weight:bold;}
     button:hover{background:#c00;}
+    .projects-list{margin:20px 0;padding:20px;background:#222;border-radius:10px;}
+    pre{background:#000;color:#0f0;padding:10px;border-radius:5px;overflow-x:auto;}
   </style>
 </head>
 <body>
-  <h1>Админ-панель</h1>
-  <p>Здесь можно редактировать JSON с проектами. После редактирования скопируй содержимое в <code>projects.json</code> в GitHub.</p>
-  
-  <textarea id="editor"></textarea>
-  <button onclick="save()">Сохранить локально</button>
+  <h1>Админ‑панель</h1>
+  <p>Добавляй проекты через форму. Сохраняй готовый <code>projects.json</code> и загружай в GitHub.</p>
+
+  <!-- Форма для добавления -->
+  <form id="projectForm">
+    <label>Заголовок
+      <input type="text" id="title" required>
+    </label>
+    <label>Описание
+      <textarea id="desc" required></textarea>
+    </label>
+    <label>Картинка (URL)
+      <input type="text" id="img" required>
+    </label>
+    <label>Теги (через запятую)
+      <input type="text" id="tags" placeholder="Например: C#, C++">
+    </label>
+    <label>Ссылка
+      <input type="text" id="link" required>
+    </label>
+    <label>Доступ
+      <select id="access">
+        <option value="public">Для всех</option>
+        <option value="secret">Для НЕДОХАКЕРЫ</option>
+      </select>
+    </label>
+    <button type="submit">Добавить проект</button>
+  </form>
+
+  <!-- Список текущих проектов -->
+  <div class="projects-list">
+    <h2>Текущие проекты:</h2>
+    <ul id="projectList"></ul>
+  </div>
+
+  <!-- Экспорт JSON -->
+  <h2>Экспорт JSON</h2>
+  <pre id="jsonOutput">{}</pre>
+  <button onclick="downloadJSON()">Скачать projects.json</button>
 
   <script>
-    fetch("projects.json")
-      .then(res=>res.json())
-      .then(data=>{
-        document.getElementById("editor").value = JSON.stringify(data,null,2);
+    let projects = [];
+
+    // Загружаем существующие проекты
+    fetch("../projects.json")
+      .then(res => res.json())
+      .then(data => {
+        projects=data;
+        renderProjects();
+        updateJSON();
       });
 
-    function save(){
-      const content=document.getElementById("editor").value;
-      const blob=new Blob([content],{type:"application/json"});
+    // Формируем список
+    function renderProjects(){
+      const list=document.getElementById("projectList");
+      list.innerHTML="";
+      projects.forEach((p,i)=>{
+        const li=document.createElement("li");
+        li.textContent=`${p.title} [${p.access}]`;
+        const del=document.createElement("button");
+        del.textContent="Удалить";
+        del.style.marginLeft="10px";
+        del.onclick=()=>{projects.splice(i,1);renderProjects();updateJSON()};
+        li.appendChild(del);
+        list.appendChild(li);
+      });
+    }
+
+    // Обновляем JSON‑превью
+    function updateJSON(){
+      document.getElementById("jsonOutput").textContent=JSON.stringify(projects,null,2);
+    }
+
+    // При добавлении проекта
+    document.getElementById("projectForm").addEventListener("submit",e=>{
+      e.preventDefault();
+      const newProject={
+        title:document.getElementById("title").value,
+        desc:document.getElementById("desc").value,
+        img:document.getElementById("img").value,
+        tags:document.getElementById("tags").value.split(",").map(t=>t.trim()).filter(t=>t),
+        link:document.getElementById("link").value,
+        access:document.getElementById("access").value
+      };
+      projects.push(newProject);
+      renderProjects();
+      updateJSON();
+      e.target.reset();
+    });
+
+    // Скачать JSON
+    function downloadJSON(){
+      const blob=new Blob([JSON.stringify(projects,null,2)],{type:"application/json"});
       const link=document.createElement("a");
       link.href=URL.createObjectURL(blob);
       link.download="projects.json";
