@@ -153,7 +153,7 @@
   const error=document.getElementById("loginError");
   const closeBtn=document.getElementById("closeModal");
   let unlocked=false;
-  const VALID_LOGIN="nedo", VALID_PASS="hack";
+  const VALID_LOGIN="nedohackers", VALID_PASS="hack";
 
   tabBtns.forEach(btn=>{
     btn.addEventListener("click",()=>{
@@ -169,7 +169,7 @@
     if(loginI.value===VALID_LOGIN && passI.value===VALID_PASS){
       unlocked=true;modal.style.display="none";
       switchTab(document.querySelector('.tab-btn[data-tab="secret"]'),"secret");
-    } else{error.textContent="❌ Неправильный логин или пароль";}
+    } else{error.textContent="❌ Неправильный логин или пароль. ВРЕМЕННО: Логин nedohackers, Пароль hack}
   };
 
   function switchTab(btn,id){
@@ -209,4 +209,5 @@
 </script>
 </body>
 </html>
+
 
