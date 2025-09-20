@@ -254,11 +254,39 @@
     btn.classList.add("active");
     document.getElementById(id).classList.add("active");
   }
+  
 
   // Закрытие модалки
   closeBtn.onclick=()=>modal.style.display="none";
   window.onclick=(e)=>{if(e.target===modal) modal.style.display="none";}
   window.onkeydown=(e)=>{if(e.key==="Escape") modal.style.display="none";}
+    
+<script>
+fetch("projects.json")
+  .then(res=>res.json())
+  .then(data=>{
+    const publicGrid=document.querySelector("#public .works-grid");
+    const secretGrid=document.querySelector("#secret .works-grid");
+
+    data.forEach(p=>{
+      const card=document.createElement("div");
+      card.classList.add("work-card");
+      card.innerHTML=`
+        <img src="${p.img}" alt="${p.title}" class="work-img">
+        <div class="work-info">
+          <h3 class="work-title">${p.title}</h3>
+          <p class="work-desc">${p.desc}</p>
+          ${p.tags.map(tag=>`<span class="tech-tag">${tag}</span>`).join("")}
+          <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Играть ➜":"Скачать ➜"}</a>
+        </div>
+      `;
+      (p.access==="public" ? publicGrid : secretGrid).appendChild(card);
+    });
+
+    // обновляем счётчик проектов автоматически
+    document.getElementById("projectCount").textContent = data.length;
+  });
 </script>
 </body>
 </html>
+
