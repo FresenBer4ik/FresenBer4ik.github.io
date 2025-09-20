@@ -41,7 +41,7 @@
     .main-container {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start; /* !!! вместо stretch */
+        align-items: flex-start; /* карточки подтянуты по контенту */
         padding: 30px 40px;
         gap: 20px;
     }
@@ -54,10 +54,7 @@
         box-shadow: 0 0 8px rgba(255,66,66,0.15);
     }
 
-    .card h3 {
-        margin-top: 0;
-        color: #ff4242;
-    }
+    .card h3 { color: #ff4242; margin-top: 0; }
 
     input, textarea, select {
         width: 100%;
@@ -96,7 +93,6 @@
         margin-top: 20px;
         background: #202020;
         border-radius: 8px;
-        overflow: hidden;
     }
     th, td {
         padding: 14px;
@@ -129,12 +125,11 @@
         border-radius: 6px;
         color: #a8ff60;
         font-size: 13px;
-        overflow-x: auto;
-        max-height: 400px; /* ограничение по высоте JSON-блока */
+        max-height: 400px;
         overflow-y: auto;
     }
 
-    /* --- Модалка --- */
+    /* --- Модалка для предпросмотра --- */
     .modal {
         position: fixed; top: 0; left: 0;
         width: 100%; height: 100%;
@@ -146,30 +141,73 @@
     }
     .modal.active { opacity: 1; pointer-events: auto; }
     .modal-card {
-        width: 500px; max-width: 90%;
-        background: #202020;
+        width: 420px; max-width: 95%;
+        background: transparent;
         border-radius: 8px;
-        box-shadow: 0 0 20px rgba(255,66,66,0.5);
-        padding: 20px;
         transform: scale(0.8);
         transition: transform 0.3s ease;
+        position: relative;
     }
     .modal.active .modal-card { transform: scale(1); }
-    .modal-header {
-        display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 15px;
-    }
-    .modal-header h2 { margin: 0; color: #ff4242; }
     .close-btn {
-        background: none; border: none;
-        font-size: 22px; color: #f5f5f5;
+        position: absolute;
+        top: -10px; right: -10px;
+        background: #ff4242;
+        border: none;
+        font-size: 18px;
+        color: #fff;
+        border-radius: 50%;
+        width: 30px; height: 30px;
         cursor: pointer;
     }
-    .preview-img {
-        width: 100%; max-height: 200px;
-        border-radius: 6px;
-        margin-bottom: 15px;
+
+    /* --- Карточка как на сайте --- */
+    .preview-card {
+        background: #202020;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        overflow: hidden;
+        font-family: inherit;
+    }
+    .preview-card img {
+        width: 100%;
+        height: 200px;
         object-fit: cover;
+    }
+    .preview-body {
+        padding: 15px;
+    }
+    .preview-body h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+    }
+    .preview-body p {
+        margin: 0 0 10px;
+        color: #ccc;
+    }
+    .tag {
+        display: inline-block;
+        background: #2c2c2c;
+        color: #ff4242;
+        border-radius: 15px;
+        padding: 4px 10px;
+        margin: 3px 6px 3px 0;
+        font-size: 12px;
+    }
+    .play-btn {
+        display: inline-block;
+        margin-top: 10px;
+        color: #ff4242;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+    .play-btn:hover {
+        color: #fff;
+        text-shadow: 0 0 8px #ff4242;
     }
 </style>
 </head>
@@ -186,6 +224,7 @@
         <input type="text" id="title" placeholder="Заголовок">
         <input type="text" id="url" placeholder="URL картинки">
         <input type="text" id="tags" placeholder="Теги (через запятую)">
+        <input type="text" id="link" placeholder="Ссылка (Играть)">
         <select id="access">
             <option value="public">Для всех</option>
             <option value="secret">Секретный</option>
@@ -216,23 +255,17 @@
 <!-- Модалка -->
 <div id="previewModal" class="modal">
   <div class="modal-card">
-    <div class="modal-header">
-      <h2 id="previewTitle"></h2>
-      <button class="close-btn" onclick="closePreview()">✖</button>
-    </div>
-    <img id="previewImg" class="preview-img" src="" alt="">
-    <p><b>Доступ:</b> <span id="previewAccess"></span></p>
-    <p><b>Теги:</b> <span id="previewTags"></span></p>
-    <p><b>Описание:</b> <span id="previewDesc"></span></p>
+    <button class="close-btn" onclick="closePreview()">✖</button>
+    <div id="previewContent"></div>
   </div>
 </div>
 
 <script>
     let projects = [];
 
-    // <-- Укажи ссылку на RAW GitHub JSON
-    const githubJson = "https://raw.githubusercontent.com/FresenBer4ik/FresenBer4ik.github.io/main/projects.json";
-    const repoUrl = "https://github.com/FresenBer4ik/FresenBer4ik.github.io";
+    // Подключение JSON с GitHub (замени на свой URL!)
+    const githubJson = "https://raw.githubusercontent.com/your-username/your-repo/main/projects.json";
+    const repoUrl = "https://github.com/your-username/your-repo";
 
     function openRepo() { window.open(repoUrl, "_blank"); }
 
@@ -259,12 +292,13 @@
         let title = document.getElementById('title').value;
         let url = document.getElementById('url').value;
         let tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean);
+        let link = document.getElementById('link').value;
         let access = document.getElementById('access').value;
         let desc = document.getElementById('desc').value;
 
         if (!title) { alert("Введите название"); return; }
 
-        let project = { title, url, tags, access, desc };
+        let project = { title, url, tags, link, access, desc };
         projects.push(project);
         saveLocal();
         renderProjects();
@@ -273,6 +307,7 @@
         document.getElementById('title').value = "";
         document.getElementById('url').value = "";
         document.getElementById('tags').value = "";
+        document.getElementById('link').value = "";
         document.getElementById('desc').value = "";
     }
 
@@ -328,14 +363,24 @@
 
     function saveLocal() { localStorage.setItem("projects", JSON.stringify(projects)); }
 
+    // --- Предпросмотр карточки ---
     function openPreview(p) {
-        document.getElementById("previewTitle").innerText = p.title;
-        document.getElementById("previewImg").src = p.url || "https://via.placeholder.com/400x200";
-        document.getElementById("previewAccess").innerText = p.access;
-        document.getElementById("previewTags").innerText = (p.tags||[]).join(", ");
-        document.getElementById("previewDesc").innerText = p.desc || "—";
+        const tagsHtml = (p.tags||[]).map(tag => `<span class="tag">${tag}</span>`).join(" ");
+
+        document.getElementById("previewContent").innerHTML = `
+            <div class="preview-card">
+                <img src="${p.url || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="">
+                <div class="preview-body">
+                    <h3>${p.title}</h3>
+                    <p>${p.desc || ""}</p>
+                    <div>${tagsHtml}</div>
+                    ${p.link ? `<a href="${p.link}" target="_blank" class="play-btn">Играть ➡️</a>` : ""}
+                </div>
+            </div>
+        `;
         document.getElementById("previewModal").classList.add("active");
     }
+
     function closePreview() {
         document.getElementById("previewModal").classList.remove("active");
     }
