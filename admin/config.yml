@@ -1,20 +1,13 @@
-backend:
-  name: github
-  repo: FresenBer4ik/FresenBer4ik.github.io   # твой репозиторий
-  branch: main
-  auth: implicit
-
-media_folder: "assets/uploads"
-public_folder: "/assets/uploads"
-
-collections:
-  - name: "projects"
-    label: "Проекты"
-    file: "projects.json"
-    fields:
-      - {label: "Заголовок", name: "title", widget: "string"}
-      - {label: "Описание", name: "desc", widget: "text"}
-      - {label: "Картинка", name: "img", widget: "string"}
-      - {label: "Теги", name: "tags", widget: "list"}
-      - {label: "Ссылка", name: "link", widget: "string"}
-      - {label: "Доступ", name: "access", widget: "select", options: ["public", "secret"]}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Админка EdvardCode</title>
+  <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+</head>
+<body>
+  <script>
+    CMS.init();
+  </script>
+</body>
+</html>
