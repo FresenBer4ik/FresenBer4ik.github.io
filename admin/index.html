@@ -2,11 +2,116 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Админка EdvardCode</title>
-  <!-- Подключаем Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: #000;
+      color: #0f0;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    #console {
+      width: 100%;
+      max-width: 800px;
+      white-space: pre-wrap;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .line {
+      margin: 0;
+    }
+
+    .red-screen {
+      background: #400;
+      color: #f33;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+      padding: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #f33;
+      color: #fff;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn:hover { background: #a00; }
+  </style>
 </head>
 <body>
-  <h2 style="color:white;text-align:center;margin-top:50px;">Загрузка админки...</h2>
+  <div id="console"></div>
+
+  <script>
+    const consoleEl = document.getElementById('console');
+    const messages = [
+      "[INFO] Подключение к серверу...",
+      "[DEBUG] Проверка user token...",
+      "[TRACE] Загружен модуль 0x0f21a94",
+      "[INFO] Попытка brute-force входа",
+      "[WARN] Неожиданный пакет получен",
+      "[ERROR] Ошибка в модуле auth.dll",
+      "[INFO] Запуск эксплойта CVE-XXXX-12345",
+      "[ERROR] Озверел хомяк в серверной 🐹",
+      "[INFO] Отправка секретного запроса...",
+      "[CRITICAL] Система обнаружила взлом!"
+    ];
+
+    let msgIndex = 0;
+
+    function typeLine(text, callback) {
+      const line = document.createElement("div");
+      line.className = "line";
+      consoleEl.appendChild(line);
+
+      let i = 0;
+      const interval = setInterval(() => {
+        line.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          callback && callback();
+        }
+      }, 30); // скорость печати
+    }
+
+    function printNext() {
+      if (msgIndex < messages.length) {
+        typeLine(messages[msgIndex], () => {
+          msgIndex++;
+          setTimeout(printNext, 300); // задержка перед следующей строкой
+        });
+      } else {
+        setTimeout(showRedScreen, 1000);
+      }
+    }
+
+    function showRedScreen() {
+      document.body.innerHTML = `
+        <div class="red-screen">
+          🚫 Ты реально думал, что тут админка?<br><br>
+          Системное уведомление: за вами уже выехали 🚓<br><br>
+          <a href="/" class="btn">Вернуться на сайт</a>
+        </div>
+      `;
+    }
+
+    // запускаем шоу
+    printNext();
+  </script>
 </body>
 </html>
