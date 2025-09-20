@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: FresenBer4ik/FresenBer4ik.github.io
+  repo: FresenBer4ik/FresenBer4ik.github.io   # <-- твой репозиторий
   branch: main
-  auth: implicit
+  auth: implicit       # простая авторизация через Github OAuth
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
