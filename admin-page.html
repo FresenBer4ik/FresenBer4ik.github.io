@@ -15,7 +15,7 @@
       align-items:start;
     }
 
-    /* Левая колонка — форма и список */
+    /* =============== ФОРМА СЛЕВА =============== */
     form{
       padding:20px;background:#151515;border-radius:12px;
       box-shadow:0 0 15px rgba(255,0,0,0.3);
@@ -37,43 +37,92 @@
     #addBtn:hover{background:#c00;box-shadow:0 0 10px #f33;}
 
     .projects-list{margin-top:30px;}
-    .project{margin:10px 0;padding:15px;background:#1a1a1a;border-radius:10px;
-      display:flex;justify-content:space-between;align-items:center;}
-    .project span{color:#f66;margin-left:10px;font-size:14px;}
-    .project button{background:#f00;color:#fff;border:none;padding:5px 10px;
-      border-radius:6px;cursor:pointer;}
+    .project{
+      margin:6px 0;
+      padding:10px 15px;
+      background:#1a1a1a;
+      border-radius:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:0.9rem;
+    }
+    .project span{color:#f66;margin-left:10px;font-size:0.8rem;}
+    .project button{
+      background:#f00;color:#fff;border:none;padding:4px 8px;
+      border-radius:6px;cursor:pointer;font-size:0.8rem;
+    }
     .project button:hover{background:#c00;}
 
-    /* Правая колонка — json и предпросмотр */
-    .right-panel{padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.3);}
-    .toggle-btn{padding:8px 18px;background:#333;color:#fff;border:none;
-      border-radius:8px;cursor:pointer;font-weight:bold;float:right;}
-    .toggle-btn:hover{background:#f00;}
-    pre{background:#000;color:#0f0;padding:15px;border-radius:8px;display:none;
-      white-space:pre-wrap;word-wrap:break-word;max-height:400px;overflow-y:auto;margin-top:10px;}
-    
-    .preview-card{
-      margin-top:40px;background:#111;border:1px solid #333;border-radius:10px;
-      overflow:hidden;box-shadow:0 0 15px rgba(255,0,0,0.2);
+    /* =============== ПРАВАЯ ПАНЕЛЬ =============== */
+    .right-panel{
+      padding:20px;background:#151515;border-radius:12px;
+      box-shadow:0 0 15px rgba(255,0,0,0.3);
     }
-    .preview-card img{width:100%;height:160px;object-fit:cover;}
+    .toggle-btn{
+      padding:8px 15px;background:#333;color:#fff;border:none;
+      border-radius:8px;cursor:pointer;font-weight:bold;float:right;
+      margin-bottom:10px;
+    }
+    .toggle-btn:hover{background:#f00;}
+    pre{
+      background:#000;color:#0f0;padding:15px;border-radius:8px;display:none;
+      white-space:pre-wrap;word-wrap:break-word;max-height:300px;overflow-y:auto;
+      font-size:0.85rem;
+    }
+
+    /* =============== ПРЕДПРОСМОТР =============== */
+    .preview-card{
+      margin-top:40px;
+      background:#111;
+      border:1px solid #333;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 0 15px rgba(255,0,0,0.2);
+      width:280px;
+    }
+    .preview-card img{
+      width:100%;
+      height:170px;
+      object-fit:cover;
+    }
     .preview-info{padding:15px;}
-    .preview-title{color:#f00;font-size:1.2rem;margin-bottom:10px;}
-    .preview-desc{color:#ccc;font-size:0.95rem;}
+    .preview-title{color:#f00;font-size:1.1rem;margin-bottom:8px;}
+    .preview-desc{color:#ccc;font-size:0.9rem;margin-bottom:10px;}
+    .preview-tags{margin-bottom:10px;}
+    .preview-tag{
+      display:inline-block;
+      background:rgba(255,0,0,0.1);
+      color:#f66;
+      padding:3px 8px;
+      border-radius:12px;
+      font-size:0.75rem;
+      margin:0 5px 5px 0;
+    }
+    .preview-link{
+      display:inline-block;
+      text-decoration:none;
+      color:#fff;
+      background:linear-gradient(45deg,#f00,#c00);
+      padding:8px 15px;
+      border-radius:20px;
+      font-weight:bold;
+      transition:.3s;
+    }
+    .preview-link:hover{background:linear-gradient(45deg,#c00,#f00);box-shadow:0 0 10px #f33;}
   </style>
 </head>
 <body>
   <h1>Админ-панель</h1>
   <div class="admin-container">
 
-    <!-- Левая колонка -->
+    <!-- ========== ЛЕВАЯ КОЛОНКА ========== -->
     <div>
       <form id="projectForm">
         <div class="form-grid">
           <div>
             <label>Заголовок:</label>
-            <input type="text" id="title" required>
+            <input type="text" id="title" required oninput="updatePreview()">
           </div>
           <div>
             <label>URL картинки:</label>
@@ -81,15 +130,15 @@
           </div>
           <div>
             <label>Теги (через запятую):</label>
-            <input type="text" id="tags">
+            <input type="text" id="tags" oninput="updatePreview()">
           </div>
           <div>
             <label>Ссылка:</label>
-            <input type="text" id="link" required>
+            <input type="text" id="link" required oninput="updatePreview()">
           </div>
           <div>
             <label>Доступ:</label>
-            <select id="access">
+            <select id="access" onchange="updatePreview()">
               <option value="public">Для всех</option>
               <option value="secret">Для НЕДОХАКЕРЫ</option>
             </select>
@@ -108,18 +157,20 @@
       </div>
     </div>
 
-    <!-- Правая колонка -->
+    <!-- ========== ПРАВАЯ КОЛОНКА ========== -->
     <div class="right-panel">
       <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
       <pre id="jsonOut">{}</pre>
       <button onclick="download()">💾 Скачать projects.json</button>
 
-      <!-- Предпросмотр проекта -->
+      <!-- Предпросмотр -->
       <div class="preview-card" id="previewCard" style="display:none;">
         <img id="previewImg" src="" alt="">
         <div class="preview-info">
           <div class="preview-title" id="previewTitle">Заголовок</div>
           <div class="preview-desc" id="previewDesc">Описание проекта появится тут...</div>
+          <div class="preview-tags" id="previewTags"></div>
+          <a href="#" target="_blank" class="preview-link" id="previewLink">Ссылка ➜</a>
         </div>
       </div>
     </div>
@@ -171,6 +222,7 @@
       render();
       updateJSON();
       e.target.reset();
+      document.getElementById("previewCard").style.display="none"; // очистить предпросмотр
     });
 
     function download(){
@@ -191,22 +243,36 @@
       }
     }
 
-    // === Предпросмотр проекта ===
+    // Предпросмотр
     function updatePreview(){
-      const title=document.getElementById("title").value;
-      const desc=document.getElementById("desc").value;
-      const img=document.getElementById("img").value;
+      const titleVal=document.getElementById("title").value;
+      const descVal=document.getElementById("desc").value;
+      const imgVal=document.getElementById("img").value;
+      const tagsVal=document.getElementById("tags").value;
+      const linkVal=document.getElementById("link").value;
 
       const card=document.getElementById("previewCard");
-      const imgEl=document.getElementById("previewImg");
-      const titleEl=document.getElementById("previewTitle");
-      const descEl=document.getElementById("previewDesc");
+      const img=document.getElementById("previewImg");
+      const title=document.getElementById("previewTitle");
+      const desc=document.getElementById("previewDesc");
+      const tags=document.getElementById("previewTags");
+      const link=document.getElementById("previewLink");
 
-      if(title || desc || img){
+      if(titleVal || descVal || imgVal || tagsVal || linkVal){
         card.style.display="block";
-        if(title) titleEl.textContent=title;
-        if(desc) descEl.textContent=desc;
-        if(img) imgEl.src=img;
+        title.textContent=titleVal || "Без названия";
+        desc.textContent=descVal || "Описание...";
+        link.href=linkVal || "#";
+        tags.innerHTML="";
+        if(tagsVal){
+          tagsVal.split(",").map(t=>t.trim()).filter(Boolean).forEach(tag=>{
+            const span=document.createElement("span");
+            span.className="preview-tag";
+            span.textContent=tag;
+            tags.appendChild(span);
+          });
+        }
+        if(imgVal) img.src=imgVal;
       } else {
         card.style.display="none";
       }
