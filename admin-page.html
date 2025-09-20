@@ -15,16 +15,12 @@
       align-items:start;
     }
 
-    /* =============== ФОРМА СЛЕВА =============== */
+    /* Форма */
     form{
       padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.3);
+      box-shadow:0 0 15px rgba(255,0,0,0.3);width:600px;
     }
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:20px 25px;
-    }
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 25px;}
     label{display:block;margin-bottom:5px;color:#ddd;font-size:14px;}
     input,textarea,select{
       width:100%;padding:10px;border:none;border-radius:8px;background:#000;color:#fff;
@@ -36,25 +32,24 @@
     }
     #addBtn:hover{background:#c00;box-shadow:0 0 10px #f33;}
 
+    /* Таблица проектов */
     .projects-list{margin-top:30px;}
-    .project{
-      margin:6px 0;
-      padding:10px 15px;
-      background:#1a1a1a;
-      border-radius:8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:0.9rem;
+    .projects-table{
+      width:600px;border-collapse:collapse;margin-top:10px;
+      background:#1a1a1a;border-radius:10px;overflow:hidden;font-size:0.9rem;
     }
-    .project span{color:#f66;margin-left:10px;font-size:0.8rem;}
-    .project button{
-      background:#f00;color:#fff;border:none;padding:4px 8px;
+    .projects-table th,.projects-table td{
+      padding:10px;border-bottom:1px solid #333;text-align:left;
+    }
+    .projects-table th{background:#222;color:#f66;}
+    .projects-table tr:last-child td{border-bottom:none;}
+    .projects-table button{
+      background:#f00;color:#fff;border:none;padding:5px 10px;
       border-radius:6px;cursor:pointer;font-size:0.8rem;
     }
-    .project button:hover{background:#c00;}
+    .projects-table button:hover{background:#c00;}
 
-    /* =============== ПРАВАЯ ПАНЕЛЬ =============== */
+    /* Правая панель */
     .right-panel{
       padding:20px;background:#151515;border-radius:12px;
       box-shadow:0 0 15px rgba(255,0,0,0.3);
@@ -71,43 +66,31 @@
       font-size:0.85rem;
     }
 
-    /* =============== ПРЕДПРОСМОТР =============== */
+    /* Предпросмотр */
     .preview-card{
-      margin-top:40px;
-      background:#111;
-      border:1px solid #333;
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 0 15px rgba(255,0,0,0.2);
-      width:280px;
+      margin-top:40px;background:#111;border:1px solid #333;border-radius:10px;
+      overflow:hidden;box-shadow:0 0 15px rgba(255,0,0,0.2);width:280px;
     }
-    .preview-card img{
-      width:100%;
-      height:170px;
-      object-fit:cover;
+    .preview-badge{
+      position:absolute;top:10px;left:10px;
+      background:#f00;color:#fff;font-size:0.7rem;font-weight:bold;
+      padding:3px 7px;border-radius:5px;box-shadow:0 0 5px #000;
     }
+    .preview-img-wrapper{position:relative;}
+    .preview-card img{width:100%;height:170px;object-fit:cover;}
     .preview-info{padding:15px;}
     .preview-title{color:#f00;font-size:1.1rem;margin-bottom:8px;}
     .preview-desc{color:#ccc;font-size:0.9rem;margin-bottom:10px;}
     .preview-tags{margin-bottom:10px;}
     .preview-tag{
-      display:inline-block;
-      background:rgba(255,0,0,0.1);
-      color:#f66;
-      padding:3px 8px;
-      border-radius:12px;
-      font-size:0.75rem;
+      display:inline-block;background:rgba(255,0,0,0.1);
+      color:#f66;padding:3px 8px;border-radius:12px;font-size:0.75rem;
       margin:0 5px 5px 0;
     }
     .preview-link{
-      display:inline-block;
-      text-decoration:none;
-      color:#fff;
+      display:inline-block;text-decoration:none;color:#fff;
       background:linear-gradient(45deg,#f00,#c00);
-      padding:8px 15px;
-      border-radius:20px;
-      font-weight:bold;
-      transition:.3s;
+      padding:8px 15px;border-radius:20px;font-weight:bold;transition:.3s;
     }
     .preview-link:hover{background:linear-gradient(45deg,#c00,#f00);box-shadow:0 0 10px #f33;}
   </style>
@@ -116,7 +99,7 @@
   <h1>Админ-панель</h1>
   <div class="admin-container">
 
-    <!-- ========== ЛЕВАЯ КОЛОНКА ========== -->
+    <!-- Левая колонка -->
     <div>
       <form id="projectForm">
         <div class="form-grid">
@@ -153,11 +136,21 @@
 
       <div class="projects-list">
         <h2>Текущие проекты</h2>
-        <div id="list"></div>
+        <table class="projects-table">
+          <thead>
+            <tr>
+              <th>Название</th>
+              <th>Доступ</th>
+              <th>Теги</th>
+              <th>Действие</th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- ========== ПРАВАЯ КОЛОНКА ========== -->
+    <!-- Правая колонка -->
     <div class="right-panel">
       <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
       <pre id="jsonOut">{}</pre>
@@ -165,7 +158,10 @@
 
       <!-- Предпросмотр -->
       <div class="preview-card" id="previewCard" style="display:none;">
-        <img id="previewImg" src="" alt="">
+        <div class="preview-img-wrapper">
+          <span class="preview-badge" id="previewBadge" style="display:none;">SECRET</span>
+          <img id="previewImg" src="" alt="">
+        </div>
         <div class="preview-info">
           <div class="preview-title" id="previewTitle">Заголовок</div>
           <div class="preview-desc" id="previewDesc">Описание проекта появится тут...</div>
@@ -183,26 +179,23 @@
     fetch("projects.json")
       .then(r=>r.json())
       .then(data=>{
-        projects=data;
-        render();
-        updateJSON();
+        projects=data;render();updateJSON();
       });
 
     function render(){
       const list=document.getElementById("list");
       list.innerHTML="";
       projects.forEach((p,i)=>{
-        const div=document.createElement("div");
-        div.className="project";
-        div.innerHTML=`<strong>${p.title}</strong> [${p.access}]
-                       <span>${p.tags.join(", ")}</span>`;
-        const del=document.createElement("button");
-        del.textContent="Удалить";
-        del.onclick=()=>{projects.splice(i,1);render();updateJSON()};
-        div.appendChild(del);
-        list.appendChild(div);
+        const row=document.createElement("tr");
+        row.innerHTML=`
+          <td>${p.title}</td>
+          <td>${p.access}</td>
+          <td>${p.tags.join(", ")}</td>
+          <td><button onclick="deleteProject(${i})">Удалить</button></td>`;
+        list.appendChild(row);
       });
     }
+    function deleteProject(i){projects.splice(i,1);render();updateJSON();}
 
     function updateJSON(){
       document.getElementById("jsonOut").textContent=JSON.stringify(projects,null,2);
@@ -211,26 +204,19 @@
     document.getElementById("projectForm").addEventListener("submit",e=>{
       e.preventDefault();
       const newP={
-        title:title.value,
-        desc:desc.value,
-        img:img.value,
+        title:title.value,desc:desc.value,img:img.value,
         tags:tags.value.split(",").map(t=>t.trim()).filter(Boolean),
-        link:link.value,
-        access:access.value
+        link:link.value,access:access.value
       };
-      projects.push(newP);
-      render();
-      updateJSON();
+      projects.push(newP);render();updateJSON();
       e.target.reset();
-      document.getElementById("previewCard").style.display="none"; // очистить предпросмотр
+      document.getElementById("previewCard").style.display="none";
     });
 
     function download(){
       const blob=new Blob([JSON.stringify(projects,null,2)],{type:"application/json"});
       const a=document.createElement("a");
-      a.href=URL.createObjectURL(blob);
-      a.download="projects.json";
-      a.click();
+      a.href=URL.createObjectURL(blob);a.download="projects.json";a.click();
     }
 
     function toggleJSON(){
@@ -238,44 +224,32 @@
       const btn=document.querySelector(".toggle-btn");
       if(pre.style.display==="none"||pre.style.display===""){
         pre.style.display="block";btn.textContent="Скрыть JSON";
-      } else {
-        pre.style.display="none";btn.textContent="Показать JSON";
-      }
+      }else{pre.style.display="none";btn.textContent="Показать JSON";}
     }
 
-    // Предпросмотр
     function updatePreview(){
-      const titleVal=document.getElementById("title").value;
-      const descVal=document.getElementById("desc").value;
-      const imgVal=document.getElementById("img").value;
-      const tagsVal=document.getElementById("tags").value;
-      const linkVal=document.getElementById("link").value;
+      const titleVal=title.value,descVal=desc.value,imgVal=img.value,
+            tagsVal=tags.value,linkVal=link.value,accessVal=access.value;
+      const card=document.getElementById("previewCard"),
+            imgEl=previewImg,titleEl=previewTitle,descEl=previewDesc,
+            tagsEl=previewTags,linkEl=previewLink,badge=previewBadge;
 
-      const card=document.getElementById("previewCard");
-      const img=document.getElementById("previewImg");
-      const title=document.getElementById("previewTitle");
-      const desc=document.getElementById("previewDesc");
-      const tags=document.getElementById("previewTags");
-      const link=document.getElementById("previewLink");
-
-      if(titleVal || descVal || imgVal || tagsVal || linkVal){
+      if(titleVal||descVal||imgVal||tagsVal||linkVal){
         card.style.display="block";
-        title.textContent=titleVal || "Без названия";
-        desc.textContent=descVal || "Описание...";
-        link.href=linkVal || "#";
-        tags.innerHTML="";
+        titleEl.textContent=titleVal||"Без названия";
+        descEl.textContent=descVal||"Описание...";
+        linkEl.href=linkVal||"#";
+        tagsEl.innerHTML="";
         if(tagsVal){
           tagsVal.split(",").map(t=>t.trim()).filter(Boolean).forEach(tag=>{
             const span=document.createElement("span");
-            span.className="preview-tag";
-            span.textContent=tag;
-            tags.appendChild(span);
+            span.className="preview-tag";span.textContent=tag;
+            tagsEl.appendChild(span);
           });
         }
-        if(imgVal) img.src=imgVal;
-      } else {
-        card.style.display="none";
-      }
+        if(imgVal) imgEl.src=imgVal;
+        badge.style.display = (accessVal==="secret")?"inline-block":"none";
+      }else{card.style.display="none";}
     }
   </script>
 </body>
