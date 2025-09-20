@@ -125,7 +125,7 @@
         border-radius: 4px;
         font-size: 13px;
         cursor: pointer;
-        margin: 0 2px;
+        margin: 0 3px;
         transition: 0.2s;
     }
     .delete-btn {
@@ -135,6 +135,13 @@
     .delete-btn:hover {
         background: #e74c3c;
     }
+    .preview-btn {
+        background: #2980b9;
+        color: white;
+    }
+    .preview-btn:hover {
+        background: #3498db;
+    }
 
     pre {
         background: #2a2a2a;
@@ -143,6 +150,74 @@
         color: #a8ff60;
         font-size: 13px;
         overflow-x: auto;
+    }
+
+    /* --- модальное окно --- */
+    .modal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.65);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+    }
+
+    .modal.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .modal-card {
+        width: 500px;
+        max-width: 90%;
+        background: #202020;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(255,66,66,0.5);
+        padding: 20px;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+        color: #f5f5f5;
+    }
+
+    .modal.active .modal-card {
+        transform: scale(1);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        color: #ff4242;
+    }
+
+    .close-btn {
+        background: transparent;
+        border: none;
+        font-size: 22px;
+        color: #f5f5f5;
+        cursor: pointer;
+    }
+
+    .preview-img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+    .preview-details p {
+        margin: 5px 0;
+        font-size: 14px;
     }
 </style>
 </head>
@@ -186,6 +261,22 @@
     </table>
 </div>
 
+<!-- Модальное окно предпросмотра -->
+<div id="previewModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 id="previewTitle">Предпросмотр</h2>
+      <button class="close-btn" onclick="closePreview()">✖</button>
+    </div>
+    <img id="previewImg" class="preview-img" src="" alt="preview">
+    <div class="preview-details">
+      <p><b>Доступ:</b> <span id="previewAccess"></span></p>
+      <p><b>Теги:</b> <span id="previewTags"></span></p>
+      <p><b>Описание:</b> <span id="previewDesc"></span></p>
+    </div>
+  </div>
+</div>
+
 <script>
     let projects = [];
 
@@ -207,7 +298,7 @@
     function addProject() {
         let title = document.getElementById('title').value;
         let url = document.getElementById('url').value;
-        let tags = document.getElementById('tags').value.split(',').map(t => t.trim());
+        let tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean);
         let access = document.getElementById('access').value;
         let desc = document.getElementById('desc').value;
 
@@ -244,6 +335,15 @@
             row.insertCell(2).innerText = p.tags.join(", ");
 
             let actions = row.insertCell(3);
+
+            // кнопка предпросмотра
+            let previewBtn = document.createElement("button");
+            previewBtn.innerText = "Предпросмотр";
+            previewBtn.className = "action-btn preview-btn";
+            previewBtn.onclick = () => openPreview(p);
+            actions.appendChild(previewBtn);
+
+            // кнопка удалить
             let del = document.createElement("button");
             del.innerText = "Удалить";
             del.className = "action-btn delete-btn";
@@ -271,6 +371,21 @@
 
     function saveLocal() {
         localStorage.setItem("projects", JSON.stringify(projects));
+    }
+
+    // предпросмотр
+    function openPreview(project) {
+        document.getElementById("previewTitle").innerText = project.title;
+        document.getElementById("previewImg").src = project.url || "https://via.placeholder.com/400x200?text=No+Image";
+        document.getElementById("previewAccess").innerText = project.access;
+        document.getElementById("previewTags").innerText = project.tags.join(", ");
+        document.getElementById("previewDesc").innerText = project.desc || "—";
+
+        document.getElementById("previewModal").classList.add("active");
+    }
+
+    function closePreview() {
+        document.getElementById("previewModal").classList.remove("active");
     }
 </script>
 
