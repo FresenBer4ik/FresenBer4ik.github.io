@@ -6,17 +6,29 @@
   <title>Админка — EdvardCode</title>
   <style>
     body{margin:0;padding:30px;font-family:sans-serif;background:#0a0a0a;color:#eee;}
+    .header-bar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      max-width:800px;
+    }
     h1{color:#f00;text-shadow:0 0 15px #f33;margin-bottom:20px;}
-    
-    /* Форма */
+    .toggle-btn{
+      padding:8px 18px;background:#333;color:#fff;border:none;
+      border-radius:8px;cursor:pointer;font-weight:bold;
+    }
+    .toggle-btn:hover{background:#f00;color:#fff;box-shadow:0 0 10px #f33;}
+
+    form{
+      margin:20px 0;padding:20px;background:#151515;border-radius:12px;
+      box-shadow:0 0 15px rgba(255,0,0,0.3);max-width:800px;
+    }
     .form-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:20px;
+      gap:25px 30px; /* больше воздуха: строки 25px, между колонками 30px */
     }
-    form{margin:20px 0;padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.3);max-width:800px;}
-    label{display:block;margin-top:5px;margin-bottom:5px;color:#ddd;font-size:14px;}
+    label{display:block;margin-bottom:5px;color:#ddd;font-size:14px;}
     input,textarea,select{
       width:100%;padding:10px;border:none;border-radius:8px;background:#000;color:#fff;
     }
@@ -26,8 +38,7 @@
       border-radius:8px;cursor:pointer;font-weight:bold;
     }
     #addBtn:hover{background:#c00;box-shadow:0 0 10px #f33;}
-    
-    /* Проекты */
+
     .projects-list{margin-top:30px;max-width:800px;}
     .project{margin:10px 0;padding:15px;background:#1a1a1a;border-radius:10px;
       display:flex;justify-content:space-between;align-items:center;}
@@ -35,18 +46,18 @@
     .project button{background:#f00;color:#fff;border:none;padding:5px 10px;
       border-radius:6px;cursor:pointer;}
     .project button:hover{background:#c00;}
-    
-    /* JSON */
+
     .json-container{max-width:800px;margin-top:20px;}
     pre{background:#000;color:#0f0;padding:15px;border-radius:8px;display:none;
       white-space:pre-wrap;word-wrap:break-word;}
-    .toggle-btn{margin-top:10px;padding:8px 18px;background:#333;color:#fff;
-      border:none;border-radius:8px;cursor:pointer;}
-    .toggle-btn:hover{background:#f00;}
   </style>
 </head>
 <body>
-  <h1>Админ-панель</h1>
+  <div class="header-bar">
+    <h1>Админ-панель</h1>
+    <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
+  </div>
+
   <form id="projectForm">
     <div class="form-grid">
       <div>
@@ -86,7 +97,6 @@
   </div>
 
   <div class="json-container">
-    <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
     <pre id="jsonOut">{}</pre>
     <button onclick="download()">💾 Скачать projects.json</button>
   </div>
@@ -94,7 +104,6 @@
   <script>
     let projects=[];
 
-    // Загружаем существующие проекты
     fetch("projects.json")
       .then(r=>r.json())
       .then(data=>{
@@ -103,7 +112,6 @@
         updateJSON();
       });
 
-    // Рисуем список проектов
     function render(){
       const list=document.getElementById("list");
       list.innerHTML="";
@@ -120,12 +128,10 @@
       });
     }
 
-    // Обновляем JSON текст
     function updateJSON(){
       document.getElementById("jsonOut").textContent=JSON.stringify(projects,null,2);
     }
 
-    // Добавление проекта
     document.getElementById("projectForm").addEventListener("submit",e=>{
       e.preventDefault();
       const newP={
@@ -142,7 +148,6 @@
       e.target.reset();
     });
 
-    // Скачать JSON
     function download(){
       const blob=new Blob([JSON.stringify(projects,null,2)],{type:"application/json"});
       const a=document.createElement("a");
@@ -151,7 +156,6 @@
       a.click();
     }
 
-    // Показать/Скрыть JSON
     function toggleJSON(){
       const pre=document.getElementById("jsonOut");
       const btn=document.querySelector(".toggle-btn");
