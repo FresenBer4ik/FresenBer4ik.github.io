@@ -4,17 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EdvardCode — Портфолио</title>
-
-  <!-- SEO -->
   <meta name="description" content="Портфолио EdvardCode: проекты, утилиты, игры, веб-разработка.">
-  <link rel="icon" href="https://i.ibb.co/yYZ9xC7/favicon.png" type="image/png">
-
+  <link rel="icon" href="icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
     body{background:#0a0a0a;color:#eee;line-height:1.6;overflow-x:hidden;}
     .container{max-width:1200px;margin:0 auto;padding:0 20px;}
-
     header{background:rgba(10,10,10,0.9);border-bottom:1px solid #f00;
       padding:20px 0;position:fixed;width:100%;top:0;z-index:1000;
       box-shadow:0 5px 15px rgba(255,0,0,0.2);}
@@ -23,11 +19,8 @@
     .logo span{color:#fff;}
     .nav-links{display:flex;list-style:none;}
     .nav-links li{margin-left:25px;}
-    .nav-links a{color:#fff;text-decoration:none;font-weight:500;position:relative;transition:.3s;}
+    .nav-links a{color:#fff;text-decoration:none;font-weight:500;transition:.3s;}
     .nav-links a:hover{color:#f00;}
-    .nav-links a:after{content:"";position:absolute;bottom:-5px;left:0;height:2px;background:#f00;width:0;transition:.3s;}
-    .nav-links a:hover:after{width:100%;}
-
     .hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;}
     .hero h1{font-size:3.5rem;margin-bottom:20px;color:#f00;text-shadow:0 0 20px rgba(255,0,0,.5);}
     .hero p{font-size:1.2rem;margin-bottom:20px;color:#ccc;}
@@ -37,19 +30,14 @@
       box-shadow:0 5px 15px rgba(255,0,0,.2);transition:.3s;}
     .btn:hover{transform:translateY(-4px);background:linear-gradient(45deg,#c00,#f00);
       box-shadow:0 10px 25px rgba(255,0,0,.4);}
-
-    .works{padding:100px 0;background:rgba(20,20,20,.95);border-top:1px solid #222;border-bottom:1px solid #222;position:relative;z-index:1;}
+    .works{padding:100px 0;background:rgba(20,20,20,.95);border-top:1px solid #222;border-bottom:1px solid #222;}
     .section-title{text-align:center;font-size:2.5rem;margin-bottom:30px;color:#f00;text-shadow:0 0 12px #f44;}
-
-    /* вкладки */
     .tabs{display:flex;justify-content:center;gap:20px;margin-bottom:40px;}
     .tab-btn{background:#111;color:#eee;border:1px solid #333;padding:10px 25px;
       border-radius:20px;cursor:pointer;font-weight:bold;transition:.3s;}
     .tab-btn.active,.tab-btn:hover{background:#f00;color:#fff;box-shadow:0 0 10px #f33;}
     .tab-content{display:none;}
     .tab-content.active{display:block;}
-
-    /* карточки */
     .works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:30px;}
     .work-card{background:#111;border-radius:12px;overflow:hidden;
       border:1px solid #252525;box-shadow:0 5px 15px rgba(0,0,0,.4);
@@ -63,22 +51,15 @@
     .tech-tag{padding:5px 12px;font-size:.8rem;border-radius:15px;background:rgba(255,0,0,.1);color:#f66;border:1px solid rgba(255,0,0,.3);margin-right:5px;}
     .work-link{color:#f00;text-decoration:none;font-weight:bold;display:inline-block;margin-top:10px;}
     .work-link:hover{color:#f66;}
-
-    /* Счётчик проектов */
-    .counter { text-align:center;font-size:1.2rem;color:#f33;margin-bottom:30px;font-weight:bold; }
-
-    /* соцссылки */
-    .contact{padding:60px 0;position:relative;z-index:2;}
-    .contact .section-title{font-size:2rem;margin-bottom:20px;} 
+    .counter{text-align:center;font-size:1.2rem;color:#f33;margin-bottom:30px;font-weight:bold;}
+    .contact{padding:60px 0;text-align:center;}
+    .contact .section-title{font-size:2rem;margin-bottom:20px;}
     .social-links{display:flex;justify-content:center;gap:25px;list-style:none;margin:25px 0;}
     .social-links a{width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;
       background:#151515;color:#fff;font-size:1.3rem;border:1px solid #333;transition:.3s;cursor:pointer;}
     .social-links a:hover{background:#f00;color:#000;transform:translateY(-5px) scale(1.1);box-shadow:0 0 15px #f33;}
-
     footer{background:#0a0a0a;text-align:center;padding:40px 0;border-top:1px solid #f00;}
     .copyright{color:#666;}
-
-    /* Окно логина */
     .modal{display:none;position:fixed;z-index:2000;inset:0;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;}
     .modal-content{background:#111;padding:35px;border:1px solid #f00;border-radius:15px;width:320px;text-align:center;
       box-shadow:0 0 25px #f33;animation:scaleIn .3s ease;position:relative;}
@@ -90,13 +71,9 @@
     .error-text{color:#f66;margin-top:10px;font-size:.9rem;}
     .close-btn{position:absolute;top:10px;right:15px;color:#f66;font-size:1.5rem;cursor:pointer;}
     .close-btn:hover{color:#fff;}
-    
-    #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
   </style>
 </head>
 <body>
-<div id="particles-js"></div>
-
 <header>
   <div class="container">
     <nav>
@@ -120,56 +97,16 @@
 <section class="works" id="works">
   <div class="container">
     <h2 class="section-title">Мои работы</h2>
-
     <p class="counter">Всего проектов: <span id="projectCount"></span></p>
-
     <div class="tabs">
       <button class="tab-btn active" data-tab="public">Для всех</button>
       <button class="tab-btn" data-tab="secret">Для НЕДОХАКЕРЫ</button>
     </div>
-
-    <!-- вкладка для всех -->
-    <div id="public" class="tab-content active">
-      <div class="works-grid">
-        <div class="work-card">
-          <img src="https://i.ibb.co/wFLSbj39/image.png" alt="" class="work-img">
-          <div class="work-info">
-            <h3 class="work-title">Virus vs Antivirus</h3>
-            <p class="work-desc">Космический шутер на C# с вирусами и антивирусами.</p>
-            <span class="tech-tag">HTML</span><span class="tech-tag">C#</span>
-            <a href="https://fresenber4ik.github.io/cosmosgameboss/" target="_blank" class="work-link">Поиграть ➜</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- вкладка для недохакеры -->
-    <div id="secret" class="tab-content">
-      <div class="works-grid">
-        <div class="work-card">
-          <img src="https://i.ibb.co/8LVHyBH0/mine.png" alt="" class="work-img">
-          <div class="work-info">
-            <h3 class="work-title">EdLauncher</h3>
-            <p class="work-desc">Самый лучший Майнкрафт лаунчер в мире.</p>
-            <span class="tech-tag">Python</span><span class="tech-tag">C#</span>
-            <a href="https://mega.nz" target="_blank" class="work-link">Скачать ➜</a>
-          </div>
-        </div>
-        <div class="work-card">
-          <img src="https://i.ibb.co/NnYbbPL2/image.png" alt="" class="work-img">
-          <div class="work-info">
-            <h3 class="work-title">AegisGuard</h3>
-            <p class="work-desc">Антивирус, который не только удалит, но и добавит ещё 😈.</p>
-            <span class="tech-tag">C#</span><span class="tech-tag">C++</span>
-            <a href="https://mega.nz" target="_blank" class="work-link">Скачать ➜</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="public" class="tab-content active"><div class="works-grid"></div></div>
+    <div id="secret" class="tab-content"><div class="works-grid"></div></div>
   </div>
 </section>
 
-<!-- соцсети -->
 <section class="contact" id="contact">
   <h2 class="section-title">Связаться со мной</h2>
   <ul class="social-links">
@@ -184,7 +121,7 @@
   <p class="copyright">© 2025 EdvardCode. Все права защищены.</p>
 </footer>
 
-<!-- модальное окно для логина -->
+<!-- модальное окно -->
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <span class="close-btn" id="closeModal">&times;</span>
@@ -196,29 +133,17 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 <script>
-  // particles.js
-  particlesJS.load('particles-js', 'https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js@master/demo/particles.json');
-
-  // Счётчик проектов
-  document.getElementById("projectCount").textContent=document.querySelectorAll(".work-card").length;
-
-  // Fade-up анимация
-  const cards=document.querySelectorAll('.work-card');
+  // Fade-up
   const observer=new IntersectionObserver(entries=>{
     entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show");});
   },{threshold:0.2});
-  cards.forEach(c=>observer.observe(c));
 
-  // typing эффект
+  // typing
   const typedText=document.querySelector(".typed");
-  if(typedText){
-    const fullText=typedText.textContent;typedText.textContent="";
-    let i=0;(function typeWriter(){if(i<fullText.length){typedText.textContent+=fullText.charAt(i);i++;setTimeout(typeWriter,80);}})();
-  }
+  if(typedText){const fullText=typedText.textContent;typedText.textContent="";let i=0;(function t(){if(i<fullText.length){typedText.textContent+=fullText.charAt(i);i++;setTimeout(t,80);}})();}
 
-  // вкладки + логин
+  // вкладки+логин
   const tabBtns=document.querySelectorAll(".tab-btn");
   const contents=document.querySelectorAll(".tab-content");
   const modal=document.getElementById("loginModal");
@@ -227,26 +152,24 @@
   const error=document.getElementById("loginError");
   const closeBtn=document.getElementById("closeModal");
   let unlocked=false;
-  const VALID_LOGIN="nedohackers", VALID_PASS="hack";
+  const VALID_LOGIN="nedo", VALID_PASS="hack";
 
   tabBtns.forEach(btn=>{
     btn.addEventListener("click",()=>{
       const tabId=btn.dataset.tab;
       if(tabId==="secret" && !unlocked){
-        modal.style.display="flex";
-        loginI.value="";passI.value="";error.textContent="";
-        return;
+        modal.style.display="flex";loginI.value="";passI.value="";error.textContent="";return;
       }
       switchTab(btn,tabId);
     });
   });
 
-  document.getElementById("submitLogin").addEventListener("click",()=>{
+  document.getElementById("submitLogin").onclick=()=>{
     if(loginI.value===VALID_LOGIN && passI.value===VALID_PASS){
-      unlocked=true; modal.style.display="none";
+      unlocked=true;modal.style.display="none";
       switchTab(document.querySelector('.tab-btn[data-tab="secret"]'),"secret");
-    } else { error.textContent="❌ Неправильный логин(nedo) или пароль(hack)"; }
-  });
+    } else{error.textContent="❌ Неправильный логин или пароль";}
+  };
 
   function switchTab(btn,id){
     tabBtns.forEach(b=>b.classList.remove("active"));
@@ -254,39 +177,34 @@
     btn.classList.add("active");
     document.getElementById(id).classList.add("active");
   }
-  
 
-  // Закрытие модалки
+  // закрытие модалки
   closeBtn.onclick=()=>modal.style.display="none";
   window.onclick=(e)=>{if(e.target===modal) modal.style.display="none";}
   window.onkeydown=(e)=>{if(e.key==="Escape") modal.style.display="none";}
-    
-<script>
-fetch("projects.json")
-  .then(res=>res.json())
-  .then(data=>{
-    const publicGrid=document.querySelector("#public .works-grid");
-    const secretGrid=document.querySelector("#secret .works-grid");
 
-    data.forEach(p=>{
-      const card=document.createElement("div");
-      card.classList.add("work-card");
-      card.innerHTML=`
-        <img src="${p.img}" alt="${p.title}" class="work-img">
-        <div class="work-info">
-          <h3 class="work-title">${p.title}</h3>
-          <p class="work-desc">${p.desc}</p>
-          ${p.tags.map(tag=>`<span class="tech-tag">${tag}</span>`).join("")}
-          <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Играть ➜":"Скачать ➜"}</a>
-        </div>
-      `;
-      (p.access==="public" ? publicGrid : secretGrid).appendChild(card);
+  // ДИНАМИЧЕСКАЯ ПОДГРУЗКА
+  fetch("projects.json")
+    .then(res=>res.json())
+    .then(data=>{
+      const publicGrid=document.querySelector("#public .works-grid");
+      const secretGrid=document.querySelector("#secret .works-grid");
+      data.forEach(p=>{
+        const card=document.createElement("div");
+        card.classList.add("work-card");
+        card.innerHTML=`
+          <img src="${p.img}" alt="${p.title}" class="work-img">
+          <div class="work-info">
+            <h3 class="work-title">${p.title}</h3>
+            <p class="work-desc">${p.desc}</p>
+            ${p.tags.map(tag=>`<span class="tech-tag">${tag}</span>`).join("")}
+            <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Играть ➜":"Скачать ➜"}</a>
+          </div>`;
+        (p.access==="public"?publicGrid:secretGrid).appendChild(card);
+        observer.observe(card);
+      });
+      document.getElementById("projectCount").textContent=data.length;
     });
-
-    // обновляем счётчик проектов автоматически
-    document.getElementById("projectCount").textContent = data.length;
-  });
 </script>
 </body>
 </html>
-
