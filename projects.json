@@ -11,6 +11,17 @@
         "access": "public"
     },
     {
+        "title": "QuantumCheat",
+        "url": "https://i.ibb.co/6JVSJn12/image.png",
+        "tags": [
+            "Python",
+            "HTML"
+        ],
+        "link": "https://quantumcheat.pages.dev/",
+        "access": "public",
+        "desc": "Шуточный вирус WinLocker. Он не блокирует систему! Пароль: 125673"
+    },
+    {
         "title": "EdLauncher",
         "desc": "Самый лучший Майнкрафт лаунчер в мире. Без вирусов 100%",
         "img": "https://i.ibb.co/8LVHyBH0/mine.png",
