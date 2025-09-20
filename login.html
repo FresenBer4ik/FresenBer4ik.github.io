@@ -30,18 +30,27 @@
   </div>
 
   <script>
-    function checkLogin(){
-      const login=document.getElementById("login").value;
-      const pass=document.getElementById("pass").value;
-      const VALID_LOGIN="EdvardCode";
-      const VALID_PASS="passhackadmin"; // поменяй на свой
+  function checkLogin() {
+  const login = document.getElementById("login").value;
+  const pass = document.getElementById("pass").value;
 
-      if(login===VALID_LOGIN && pass===VALID_PASS){
-        window.location.href="/adminpage";
-      } else {
-        document.getElementById("error").textContent="❌ Неправильный логин или пароль!";
-      }
-    }
+  // Массив допустимых пользователей
+  const VALID_USERS = [
+    { login: "EdvardCode", pass: "passhackadmin" },
+    { login: "admin", pass: "password123" },
+    { login: "moderator", pass: "modpass2025" }
+    // Добавляйте сколько угодно строк
+  ];
+
+  // Проверяем, есть ли такая пара в массиве
+  const isValid = VALID_USERS.some(user => user.login === login && user.pass === pass);
+
+  if (isValid) {
+    window.location.href = "/adminpage";
+  } else {
+    document.getElementById("error").textContent = "❌ Неправильный логин или пароль!";
+  }
+}
   </script>
 </body>
 </html>
