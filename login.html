@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — EdvardCode</title>
+  <style>
+    body{background:#0a0a0a;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;
+      height:100vh;flex-direction:column;}
+    input{display:block;margin:10px 0;padding:10px;width:250px;border:1px solid #444;background:#111;color:#fff;
+      border-radius:8px;}
+    button{padding:10px 25px;background:#f00;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;}
+    button:hover{background:#c00;}
+    .error{color:#f55;margin-top:10px;}
+  </style>
+</head>
+<body>
+  <h2>Вход в админку</h2>
+  <input type="text" id="login" placeholder="Логин">
+  <input type="password" id="pass" placeholder="Пароль">
+  <button onclick="checkLogin()">Войти</button>
+  <p class="error" id="err"></p>
+
+  <script>
+    function checkLogin(){
+      const login=document.getElementById("login").value;
+      const pass=document.getElementById("pass").value;
+      // свои ЛОГИН и ПАРОЛЬ
+      const VALID_LOGIN="admin";
+      const VALID_PASS="edvardcode";
+
+      if(login===VALID_LOGIN && pass===VALID_PASS){
+        window.location.href="admin-page.html"; // редирект в админку
+      } else {
+        document.getElementById("err").textContent="❌ Неверные данные!";
+      }
+    }
+  </script>
+</body>
+</html>
