@@ -199,7 +199,7 @@
             <h3 class="work-title">${p.title}</h3>
             <p class="work-desc">${p.desc}</p>
             ${p.tags.map(tag=>`<span class="tech-tag">${tag}</span>`).join("")}
-            <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Играть ➜":"Скачать ➜"}</a>
+            <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Перейти ➜":"Скачать ➜"}</a>
           </div>`;
         (p.access==="public"?publicGrid:secretGrid).appendChild(card);
         observer.observe(card);
@@ -209,6 +209,7 @@
 </script>
 </body>
 </html>
+
 
 
 
