@@ -1,322 +1,278 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Админка — EdvardCode</title>
-  <style>
-    body{margin:0;padding:20px;font-family:sans-serif;background:#0a0a0a;color:#eee;}
-    h1{color:#f00;text-shadow:0 0 15px #f33;margin-bottom:20px;}
-    
-    .admin-container{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:40px;
-      align-items:start;
+<meta charset="UTF-8">
+<title>Админ‑панель</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #181818;
+        margin: 0;
+        padding: 0;
+        color: #f5f5f5;
     }
 
-    /* ========= ФОРМА ========= */
-    form{
-      padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.3);margin-bottom:25px;
-      width:600px; /* ограничение ширины */
-    }
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:20px 25px;
-    }
-    label{display:block;margin-bottom:5px;color:#ddd;font-size:14px;}
-    input,textarea,select{
-      width:100%;padding:10px;border:none;border-radius:8px;background:#000;color:#fff;
-    }
-    textarea{min-height:80px;grid-column:span 2;}
-    #addBtn{
-      margin-top:15px;padding:12px 25px;background:#f00;color:#fff;border:none;
-      border-radius:8px;cursor:pointer;font-weight:bold;
-    }
-    #addBtn:hover{background:#c00;box-shadow:0 0 10px #f33;}
-
-    /* ========= ТАБЛИЦА ПРОЕКТОВ ========= */
-    .projects-list h2{margin-bottom:10px;}
-    .projects-table{
-      width:600px;
-      border-collapse:collapse;
-      margin-top:10px;
-      background:#1a1a1a;
-      border-radius:10px;
-      overflow:hidden;
-      font-size:0.9rem;
-    }
-    .projects-table th, .projects-table td{
-      padding:10px;
-      border-bottom:1px solid #333;
-      text-align:left;
-    }
-    .projects-table th{background:#222;color:#f66;}
-    .projects-table tr:last-child td{border-bottom:none;}
-    .projects-table button{
-      background:#f00;color:#fff;border:none;padding:5px 10px;
-      border-radius:6px;cursor:pointer;font-size:0.8rem;
-    }
-    .projects-table button:hover{background:#c00;}
-
-    /* ========= ПРАВАЯ ПАНЕЛЬ ========= */
-    .right-panel{
-      padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.3);width:100%;
-    }
-    .toggle-btn{
-      padding:8px 15px;background:#333;color:#fff;border:none;
-      border-radius:8px;cursor:pointer;font-weight:bold;float:right;
-      margin-bottom:10px;
-    }
-    .toggle-btn:hover{background:#f00;}
-    pre{
-      background:#000;color:#0f0;padding:15px;border-radius:8px;display:none;
-      white-space:pre-wrap;word-wrap:break-word;max-height:300px;overflow-y:auto;
-      font-size:0.85rem;
+    header {
+        background: #202020;
+        border-bottom: 2px solid #ff4242;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    /* ========= ПРЕДПРОСМОТР ========= */
-    .preview-card{
-      margin-top:40px;
-      background:#111;
-      border:1px solid #333;
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 0 15px rgba(255,0,0,0.2);
-      width:280px;
-      position:relative;
+    header h1 {
+        margin: 0;
+        font-size: 26px;
+        color: #ff4242;
     }
-    .preview-card img{
-      width:100%;
-      height:170px;
-      object-fit:cover;
-    }
-    .preview-info{padding:15px;}
-    .preview-title{color:#f00;font-size:1.1rem;margin-bottom:8px;}
-    .preview-desc{color:#ccc;font-size:0.9rem;margin-bottom:10px;}
-    .preview-tags{margin-bottom:10px;}
-    .preview-tag{
-      display:inline-block;
-      background:rgba(255,0,0,0.1);
-      color:#f66;
-      padding:3px 8px;
-      border-radius:12px;
-      font-size:0.75rem;
-      margin:0 5px 5px 0;
-    }
-    .preview-link{
-      display:inline-block;
-      text-decoration:none;
-      color:#fff;
-      background:linear-gradient(45deg,#f00,#c00);
-      padding:8px 15px;
-      border-radius:20px;
-      font-weight:bold;
-      transition:.3s;
-    }
-    .preview-link:hover{background:linear-gradient(45deg,#c00,#f00);box-shadow:0 0 10px #f33;}
 
-    /* ========= SECRET Badge ========= */
-    .secret-badge{
-      position:absolute;
-      top:8px;left:8px;
-      background:#f00;
-      color:#fff;
-      font-size:0.75rem;
-      font-weight:bold;
-      padding:3px 8px;
-      border-radius:4px;
-      box-shadow:0 0 5px rgba(255,0,0,0.6);
+    .repo-btn {
+        background: #ff4242;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-weight: bold;
     }
-  </style>
+    .repo-btn:hover {
+        background: #e63838;
+        box-shadow: 0 0 10px rgba(255,66,66,0.8);
+    }
+
+    .main-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 40px;
+        gap: 20px;
+    }
+
+    .card {
+        background: #202020;
+        padding: 20px;
+        border-radius: 8px;
+        flex: 1;
+        box-shadow: 0 0 8px rgba(255,66,66,0.15);
+    }
+
+    .card h3 {
+        margin-top: 0;
+        color: #ff4242;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        margin: 6px 0 14px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background: #2a2a2a;
+        color: #f5f5f5;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+        background: #333;
+        box-shadow: 0 0 5px #ff4242;
+    }
+
+    .btn {
+        background: #ff4242;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        font-weight: bold;
+    }
+    .btn:hover {
+        background: #e63838;
+        transform: scale(1.03);
+        box-shadow: 0 0 10px rgba(255,66,66,0.7);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: #202020;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 14px;
+        text-align: center;
+    }
+    th {
+        background: #2c2c2c;
+        color: #ff4242;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background: #242424;
+    }
+    tr:hover {
+        background: #333;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        margin: 0 2px;
+        transition: 0.2s;
+    }
+    .delete-btn {
+        background: #c0392b;
+        color: white;
+    }
+    .delete-btn:hover {
+        background: #e74c3c;
+    }
+
+    pre {
+        background: #2a2a2a;
+        padding: 15px;
+        border-radius: 6px;
+        color: #a8ff60;
+        font-size: 13px;
+        overflow-x: auto;
+    }
+</style>
 </head>
 <body>
-  <h1>Админ-панель</h1>
-  <div class="admin-container">
 
-    <!-- ========== ЛЕВАЯ КОЛОНКА ========== -->
-    <div>
-      <form id="projectForm">
-        <div class="form-grid">
-          <div>
-            <label>Заголовок:</label>
-            <input type="text" id="title" required oninput="updatePreview()">
-          </div>
-          <div>
-            <label>URL картинки:</label>
-            <input type="text" id="img" required oninput="updatePreview()">
-          </div>
-          <div>
-            <label>Теги (через запятую):</label>
-            <input type="text" id="tags" oninput="updatePreview()">
-          </div>
-          <div>
-            <label>Ссылка:</label>
-            <input type="text" id="link" required oninput="updatePreview()">
-          </div>
-          <div>
-            <label>Доступ:</label>
-            <select id="access" onchange="updatePreview()">
-              <option value="public">Для всех</option>
-              <option value="secret">Для НЕДОХАКЕРЫ</option>
-            </select>
-          </div>
-          <div style="grid-column: span 2;">
-            <label>Описание:</label>
-            <textarea id="desc" required oninput="updatePreview()"></textarea>
-          </div>
-        </div>
-        <button id="addBtn" type="submit">Добавить проект</button>
-      </form>
+<header>
+    <h1>Админ‑панель</h1>
+    <button class="repo-btn" onclick="openRepo()">Перейти в репозиторий</button>
+</header>
 
-      <div class="projects-list">
-        <h2>Текущие проекты</h2>
-        <table class="projects-table">
-          <thead>
-            <tr>
-              <th>Название</th>
-              <th>Доступ</th>
-              <th>Теги</th>
-              <th>Действие</th>
-            </tr>
-          </thead>
-          <tbody id="list"></tbody>
-        </table>
-      </div>
+<div class="main-container">
+    <div class="card">
+        <h3>Добавить проект</h3>
+        <input type="text" id="title" placeholder="Заголовок">
+        <input type="text" id="url" placeholder="URL картинки">
+        <input type="text" id="tags" placeholder="Теги (через запятую)">
+        <select id="access">
+            <option value="public">Для всех</option>
+            <option value="secret">Секретный</option>
+        </select>
+        <textarea id="desc" placeholder="Описание"></textarea>
+        <button class="btn" onclick="addProject()">Добавить</button>
     </div>
 
-    <!-- ========== ПРАВАЯ КОЛОНКА ========== -->
-    <div class="right-panel">
-      <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
-      <pre id="jsonOut">{}</pre>
-      <button onclick="download()">💾 Скачать projects.json</button>
-
-      <!-- Предпросмотр -->
-      <div class="preview-card" id="previewCard" style="display:none;">
-        <div class="secret-badge" id="secretBadge" style="display:none;">SECRET</div>
-        <img id="previewImg" src="" alt="">
-        <div class="preview-info">
-          <div class="preview-title" id="previewTitle">Заголовок</div>
-          <div class="preview-desc" id="previewDesc">Описание проекта появится тут...</div>
-          <div class="preview-tags" id="previewTags"></div>
-          <a href="#" target="_blank" class="preview-link" id="previewLink">Ссылка ➜</a>
-        </div>
-      </div>
+    <div class="card">
+        <h3>JSON</h3>
+        <pre id="jsonOutput">[]</pre>
+        <button class="btn" onclick="downloadJSON()">Скачать JSON</button>
     </div>
+</div>
 
-  </div>
+<div class="card" style="margin:20px 40px;">
+    <h3>Текущие проекты</h3>
+    <table id="projectsTable">
+        <tr>
+            <th>Название</th>
+            <th>Доступ</th>
+            <th>Теги</th>
+            <th>Действие</th>
+        </tr>
+    </table>
+</div>
 
-  <script>
-    let projects=[];
+<script>
+    let projects = [];
 
-    fetch("projects.json")
-      .then(r=>r.json())
-      .then(data=>{
-        projects=data;
-        render();
-        updateJSON();
-      });
+    const repoUrl = "https://github.com/your-username/your-repo";
 
-    function render(){
-      const list=document.getElementById("list");
-      list.innerHTML="";
-      projects.forEach((p,i)=>{
-        const row=document.createElement("tr");
-        row.innerHTML=`
-          <td>${p.title}</td>
-          <td>${p.access}</td>
-          <td>${p.tags.join(", ")}</td>
-          <td><button onclick="deleteProject(${i})">Удалить</button></td>
-        `;
-        list.appendChild(row);
-      });
+    function openRepo() {
+        window.open(repoUrl, "_blank");
     }
 
-    function deleteProject(i){
-      projects.splice(i,1);
-      render();
-      updateJSON();
-    }
-
-    function updateJSON(){
-      document.getElementById("jsonOut").textContent=JSON.stringify(projects,null,2);
-    }
-
-    document.getElementById("projectForm").addEventListener("submit",e=>{
-      e.preventDefault();
-      const newP={
-        title:title.value,
-        desc:desc.value,
-        img:img.value,
-        tags:tags.value.split(",").map(t=>t.trim()).filter(Boolean),
-        link:link.value,
-        access:access.value
-      };
-      projects.push(newP);
-      render();
-      updateJSON();
-      e.target.reset();
-      document.getElementById("previewCard").style.display="none";
-    });
-
-    function download(){
-      const blob=new Blob([JSON.stringify(projects,null,2)],{type:"application/json"});
-      const a=document.createElement("a");
-      a.href=URL.createObjectURL(blob);
-      a.download="projects.json";
-      a.click();
-    }
-
-    function toggleJSON(){
-      const pre=document.getElementById("jsonOut");
-      const btn=document.querySelector(".toggle-btn");
-      if(pre.style.display==="none"||pre.style.display===""){
-        pre.style.display="block";btn.textContent="Скрыть JSON";
-      } else {
-        pre.style.display="none";btn.textContent="Показать JSON";
-      }
-    }
-
-    // === Предпросмотр ===
-    function updatePreview(){
-      const titleVal=document.getElementById("title").value;
-      const descVal=document.getElementById("desc").value;
-      const imgVal=document.getElementById("img").value;
-      const tagsVal=document.getElementById("tags").value;
-      const linkVal=document.getElementById("link").value;
-      const accessVal=document.getElementById("access").value;
-
-      const card=document.getElementById("previewCard");
-      const img=document.getElementById("previewImg");
-      const title=document.getElementById("previewTitle");
-      const desc=document.getElementById("previewDesc");
-      const tags=document.getElementById("previewTags");
-      const link=document.getElementById("previewLink");
-      const badge=document.getElementById("secretBadge");
-
-      if(titleVal || descVal || imgVal || tagsVal || linkVal){
-        card.style.display="block";
-        title.textContent=titleVal || "Без названия";
-        desc.textContent=descVal || "Описание...";
-        link.href=linkVal || "#";
-        tags.innerHTML="";
-        if(tagsVal){
-          tagsVal.split(",").map(t=>t.trim()).filter(Boolean).forEach(tag=>{
-            const span=document.createElement("span");
-            span.className="preview-tag";
-            span.textContent=tag;
-            tags.appendChild(span);
-          });
+    window.onload = function() {
+        let saved = localStorage.getItem("projects");
+        if (saved) {
+            projects = JSON.parse(saved);
+            renderProjects();
+            updateJSON();
         }
-        if(imgVal) img.src=imgVal;
-        badge.style.display = accessVal==="secret" ? "block" : "none";
-      } else {
-        card.style.display="none";
-      }
+    };
+
+    function addProject() {
+        let title = document.getElementById('title').value;
+        let url = document.getElementById('url').value;
+        let tags = document.getElementById('tags').value.split(',').map(t => t.trim());
+        let access = document.getElementById('access').value;
+        let desc = document.getElementById('desc').value;
+
+        if (!title) {
+            alert("Введите название проекта!");
+            return;
+        }
+
+        let project = { title, url, tags, access, desc };
+        projects.push(project);
+        saveLocal();
+        renderProjects();
+        updateJSON();
+
+        document.getElementById('title').value = "";
+        document.getElementById('url').value = "";
+        document.getElementById('tags').value = "";
+        document.getElementById('desc').value = "";
     }
-  </script>
+
+    function renderProjects() {
+        let table = document.getElementById('projectsTable');
+        table.innerHTML = `<tr>
+            <th>Название</th>
+            <th>Доступ</th>
+            <th>Теги</th>
+            <th>Действие</th>
+        </tr>`;
+
+        projects.forEach((p, index) => {
+            let row = table.insertRow();
+            row.insertCell(0).innerText = p.title;
+            row.insertCell(1).innerText = p.access;
+            row.insertCell(2).innerText = p.tags.join(", ");
+
+            let actions = row.insertCell(3);
+            let del = document.createElement("button");
+            del.innerText = "Удалить";
+            del.className = "action-btn delete-btn";
+            del.onclick = () => {
+                projects.splice(index, 1);
+                saveLocal();
+                renderProjects();
+                updateJSON();
+            };
+            actions.appendChild(del);
+        });
+    }
+
+    function updateJSON() {
+        document.getElementById('jsonOutput').textContent = JSON.stringify(projects, null, 4);
+    }
+
+    function downloadJSON() {
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projects, null, 4));
+        let dl = document.createElement('a');
+        dl.setAttribute("href", dataStr);
+        dl.setAttribute("download", "projects.json");
+        dl.click();
+    }
+
+    function saveLocal() {
+        localStorage.setItem("projects", JSON.stringify(projects));
+    }
+</script>
+
 </body>
 </html>
