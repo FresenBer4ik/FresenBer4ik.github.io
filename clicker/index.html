@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>🔥 Суперкликер 🔥</title>
+  <style>
+    body {
+      font-family: 'Trebuchet MS', sans-serif;
+      background: linear-gradient(135deg, #000000, #2c2c2c);
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      color: #ff4444;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-top: 25px;
+      text-shadow: 0 0 15px #ff0000, 0 0 30px #aa0000;
+    }
+
+    .container {
+      flex-grow: 1;
+    }
+
+    .counter {
+      font-size: 2em;
+      margin: 15px 0;
+      text-shadow: 0 0 8px #ff2222;
+    }
+
+    button {
+      padding: 10px 18px;
+      margin: 8px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #ff0000;
+      color: #fff;
+      transition: transform 0.15s, background 0.3s, box-shadow 0.15s;
+      box-shadow: 0 0 8px #990000;
+    }
+
+    button:hover {
+      transform: scale(1.06);
+      background: #cc0000;
+      box-shadow: 0 0 12px #ff2222, 0 0 20px #ff4444;
+    }
+
+    .shop {
+      background: rgba(255, 0, 0, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 15px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .stat {
+      margin: 6px 0 12px;
+      font-size: 1.1em;
+    }
+
+    /* Всплывающие очки */
+    .floatText {
+      position: absolute;
+      font-size: 18px;
+      color: #ff5555;
+      pointer-events: none;
+      animation: floatUp 1s ease-out forwards;
+      text-shadow: 0 0 5px #ff0000;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-70px) scale(1.2); }
+    }
+
+    /* Футер */
+    footer {
+      background: #111;
+      color: #aaa;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #ff4444;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Суперкликер 🔥</h1>
+    
+    <div class="counter">
+      <span id="score">0</span> очков
+    </div>
+
+    <button id="clickBtn">👆 Клик!</button>
+
+    <h2>Магазин</h2>
+    <div class="shop">
+      <button id="upgradeBtn">🔨 Улучшить клик (10)</button>
+      <div class="stat">Сила клика: <span id="level">1</span></div>
+      
+      <button id="autoclickerBtn">⚙️ Автокликер (50)</button>
+      <div class="stat">Автокликеров: <span id="autoclickers">0</span></div>
+
+      <button id="multiplierBtn">✖️ Множитель ×2 (200)</button>
+      <div class="stat">Множитель: <span id="multiplier">1</span>×</div>
+
+      <button id="superBtn">⚡ Супер‑апгрейд (1000)</button>
+      <div class="stat">Супер‑апгрейдов: <span id="superLevel">0</span></div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 EdvardCode. Все права защищены. | 
+    <a href="https://edvardcode.netlify.app/" target="_blank">Мой сайт</a>
+  </footer>
+
+  <script>
+    let score = 0;
+    let clickPower = 1, upgradeCost = 10;
+    let autoclickers = 0, autoclickerCost = 50;
+    let multiplier = 1, multiplierCost = 200;
+    let superLevel = 0, superCost = 1000;
+
+    const scoreEl = document.getElementById('score');
+    const clickBtn = document.getElementById('clickBtn');
+    const upgradeBtn = document.getElementById('upgradeBtn');
+    const autoclickerBtn = document.getElementById('autoclickerBtn');
+    const multiplierBtn = document.getElementById('multiplierBtn');
+    const superBtn = document.getElementById('superBtn');
+    const levelEl = document.getElementById('level');
+    const autoclickersEl = document.getElementById('autoclickers');
+    const multiplierEl = document.getElementById('multiplier');
+    const superLevelEl = document.getElementById('superLevel');
+
+    function saveGame() {
+      localStorage.setItem("clickerSave", JSON.stringify({
+        score, clickPower, upgradeCost,
+        autoclickers, autoclickerCost,
+        multiplier, multiplierCost,
+        superLevel, superCost
+      }));
+    }
+
+    function loadGame() {
+      if(localStorage.getItem("clickerSave")) {
+        let save = JSON.parse(localStorage.getItem("clickerSave"));
+        score = save.score || 0;
+        clickPower = save.clickPower || 1;
+        upgradeCost = save.upgradeCost || 10;
+        autoclickers = save.autoclickers || 0;
+        autoclickerCost = save.autoclickerCost || 50;
+        multiplier = save.multiplier || 1;
+        multiplierCost = save.multiplierCost || 200;
+        superLevel = save.superLevel || 0;
+        superCost = save.superCost || 1000;
+      }
+      updateUI();
+    }
+
+    function updateUI() {
+      scoreEl.textContent = score;
+      levelEl.textContent = clickPower;
+      upgradeBtn.textContent = `🔨 Улучшить клик (${upgradeCost})`;
+      autoclickersEl.textContent = autoclickers;
+      autoclickerBtn.textContent = `⚙️ Автокликер (${autoclickerCost})`;
+      multiplierEl.textContent = multiplier;
+      multiplierBtn.textContent = `✖️ Множитель ×2 (${multiplierCost})`;
+      superLevelEl.textContent = superLevel;
+      superBtn.textContent = `⚡ Супер‑апгрейд (${superCost})`;
+    }
+
+    function floatText(x, y, text) {
+      const span = document.createElement("span");
+      span.className = "floatText";
+      span.textContent = "+" + text;
+      span.style.left = x + "px";
+      span.style.top = y + "px";
+      document.body.appendChild(span);
+      setTimeout(() => span.remove(), 1000);
+    }
+
+    clickBtn.addEventListener('click', (e) => {
+      let gain = clickPower * multiplier * (superLevel > 0 ? superLevel * 2 : 1);
+      score += gain;
+      scoreEl.textContent = score;
+      saveGame();
+      floatText(e.clientX, e.clientY, gain);
+    });
+
+    upgradeBtn.addEventListener('click', () => {
+      if (score >= upgradeCost) {
+        score -= upgradeCost;
+        clickPower++;
+        upgradeCost = Math.floor(upgradeCost * 1.5);
+        saveGame();
+        updateUI();
+      } else alert("Не хватает очков! 💸");
+    });
+
+    autoclickerBtn.addEventListener('click', () => {
+      if (score >= autoclickerCost) {
+        score -= autoclickerCost;
+        autoclickers++;
+        autoclickerCost = Math.floor(autoclickerCost * 1.6);
+        saveGame();
+        updateUI();
+      } else alert("Не хватает очков! 💸");
+    });
+
+    multiplierBtn.addEventListener('click', () => {
+      if (score >= multiplierCost) {
+        score -= multiplierCost;
+        multiplier *= 2;
+        multiplierCost = Math.floor(multiplierCost * 2.5);
+        saveGame();
+        updateUI();
+      } else alert("Не хватает очков! 💸");
+    });
+
+    superBtn.addEventListener('click', () => {
+      if (score >= superCost) {
+        score -= superCost;
+        superLevel++;
+        superCost = Math.floor(superCost * 3);
+        saveGame();
+        updateUI();
+      } else alert("Не хватает очков! 💸");
+    });
+
+    setInterval(() => {
+      if (autoclickers > 0) {
+        let gain = autoclickers * multiplier * (superLevel > 0 ? superLevel * 2 : 1);
+        score += gain;
+        scoreEl.textContent = score;
+        saveGame();
+      }
+    }, 1000);
+
+    loadGame();
+  </script>
+</body>
+</html>
