@@ -22,7 +22,7 @@
         "access": "secret"
     },
     {
-        "title": "AegisGuard",
+        "title": "AegisGuard(РАЗРАБОТКА)",
         "desc": "Антивирус, который не только удалит, но и добавит ещё 100 вирусов.",
         "img": "https://i.ibb.co/NnYbbPL2/image.png",
         "tags": [
