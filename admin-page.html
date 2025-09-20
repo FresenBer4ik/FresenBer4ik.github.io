@@ -7,39 +7,76 @@
   <style>
     body{margin:0;padding:30px;font-family:sans-serif;background:#0a0a0a;color:#eee;}
     h1{color:#f00;text-shadow:0 0 15px #f33;margin-bottom:20px;}
+    
+    /* Форма */
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
     form{margin:20px 0;padding:20px;background:#151515;border-radius:12px;
-      box-shadow:0 0 15px rgba(255,0,0,0.2);}
-    label{display:block;margin-top:10px;color:#ddd;}
-    input,textarea,select{width:100%;padding:10px;margin-top:5px;border:none;
-      border-radius:8px;background:#000;color:#fff;}
-    button{margin-top:15px;padding:10px 20px;border:none;border-radius:8px;
-      cursor:pointer;font-weight:bold;}
-    #addBtn{background:#f00;color:#fff;}
+      box-shadow:0 0 15px rgba(255,0,0,0.3);max-width:800px;}
+    label{display:block;margin-top:5px;margin-bottom:5px;color:#ddd;font-size:14px;}
+    input,textarea,select{
+      width:100%;padding:10px;border:none;border-radius:8px;background:#000;color:#fff;
+    }
+    textarea{min-height:80px;grid-column:span 2;}
+    #addBtn{
+      margin-top:15px;padding:12px 25px;background:#f00;color:#fff;border:none;
+      border-radius:8px;cursor:pointer;font-weight:bold;
+    }
     #addBtn:hover{background:#c00;box-shadow:0 0 10px #f33;}
-    .projects-list{margin-top:30px;}
+    
+    /* Проекты */
+    .projects-list{margin-top:30px;max-width:800px;}
     .project{margin:10px 0;padding:15px;background:#1a1a1a;border-radius:10px;
       display:flex;justify-content:space-between;align-items:center;}
-    .project span{color:#f66;}
+    .project span{color:#f66;margin-left:10px;font-size:14px;}
     .project button{background:#f00;color:#fff;border:none;padding:5px 10px;
       border-radius:6px;cursor:pointer;}
     .project button:hover{background:#c00;}
-    pre{background:#000;color:#0f0;padding:15px;border-radius:8px;margin-top:20px;}
+    
+    /* JSON */
+    .json-container{max-width:800px;margin-top:20px;}
+    pre{background:#000;color:#0f0;padding:15px;border-radius:8px;display:none;
+      white-space:pre-wrap;word-wrap:break-word;}
+    .toggle-btn{margin-top:10px;padding:8px 18px;background:#333;color:#fff;
+      border:none;border-radius:8px;cursor:pointer;}
+    .toggle-btn:hover{background:#f00;}
   </style>
 </head>
 <body>
   <h1>Админ-панель</h1>
   <form id="projectForm">
-    <label>Заголовок: <input type="text" id="title" required></label>
-    <label>Описание: <textarea id="desc" required></textarea></label>
-    <label>URL картинки: <input type="text" id="img" required></label>
-    <label>Теги (через запятую): <input type="text" id="tags"></label>
-    <label>Ссылка: <input type="text" id="link" required></label>
-    <label>Доступ: 
-      <select id="access">
-        <option value="public">Для всех</option>
-        <option value="secret">Для НЕДОХАКЕРЫ</option>
-      </select>
-    </label>
+    <div class="form-grid">
+      <div>
+        <label>Заголовок:</label>
+        <input type="text" id="title" required>
+      </div>
+      <div>
+        <label>URL картинки:</label>
+        <input type="text" id="img" required>
+      </div>
+      <div>
+        <label>Теги (через запятую):</label>
+        <input type="text" id="tags">
+      </div>
+      <div>
+        <label>Ссылка:</label>
+        <input type="text" id="link" required>
+      </div>
+      <div>
+        <label>Доступ:</label>
+        <select id="access">
+          <option value="public">Для всех</option>
+          <option value="secret">Для НЕДОХАКЕРЫ</option>
+        </select>
+      </div>
+      <div style="grid-column: span 2;">
+        <label>Описание:</label>
+        <textarea id="desc" required></textarea>
+      </div>
+    </div>
     <button id="addBtn" type="submit">Добавить проект</button>
   </form>
 
@@ -48,13 +85,16 @@
     <div id="list"></div>
   </div>
 
-  <h2>Скачать JSON</h2>
-  <pre id="jsonOut">{}</pre>
-  <button onclick="download()">💾 Скачать projects.json</button>
+  <div class="json-container">
+    <button class="toggle-btn" onclick="toggleJSON()">Показать JSON</button>
+    <pre id="jsonOut">{}</pre>
+    <button onclick="download()">💾 Скачать projects.json</button>
+  </div>
 
   <script>
     let projects=[];
 
+    // Загружаем существующие проекты
     fetch("projects.json")
       .then(r=>r.json())
       .then(data=>{
@@ -63,13 +103,15 @@
         updateJSON();
       });
 
+    // Рисуем список проектов
     function render(){
       const list=document.getElementById("list");
       list.innerHTML="";
       projects.forEach((p,i)=>{
         const div=document.createElement("div");
         div.className="project";
-        div.innerHTML=`<strong>${p.title}</strong> [${p.access}] <span>${p.tags.join(", ")}</span>`;
+        div.innerHTML=`<strong>${p.title}</strong> [${p.access}]
+                       <span>${p.tags.join(", ")}</span>`;
         const del=document.createElement("button");
         del.textContent="Удалить";
         del.onclick=()=>{projects.splice(i,1);render();updateJSON()};
@@ -78,10 +120,12 @@
       });
     }
 
+    // Обновляем JSON текст
     function updateJSON(){
       document.getElementById("jsonOut").textContent=JSON.stringify(projects,null,2);
     }
 
+    // Добавление проекта
     document.getElementById("projectForm").addEventListener("submit",e=>{
       e.preventDefault();
       const newP={
@@ -93,16 +137,29 @@
         access:access.value
       };
       projects.push(newP);
-      render();updateJSON();
+      render();
+      updateJSON();
       e.target.reset();
     });
 
+    // Скачать JSON
     function download(){
       const blob=new Blob([JSON.stringify(projects,null,2)],{type:"application/json"});
       const a=document.createElement("a");
       a.href=URL.createObjectURL(blob);
       a.download="projects.json";
       a.click();
+    }
+
+    // Показать/Скрыть JSON
+    function toggleJSON(){
+      const pre=document.getElementById("jsonOut");
+      const btn=document.querySelector(".toggle-btn");
+      if(pre.style.display==="none"||pre.style.display===""){
+        pre.style.display="block";btn.textContent="Скрыть JSON";
+      } else {
+        pre.style.display="none";btn.textContent="Показать JSON";
+      }
     }
   </script>
 </body>
