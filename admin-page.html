@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Админ‑панель</title>
-<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
         background: #181818;
-        margin: 0;
-        padding: 0;
+        margin: 0; padding: 0;
         color: #f5f5f5;
     }
 
@@ -30,19 +28,20 @@
 
     .repo-btn {
         background: #ff4242;
-        color: white;
         border: none;
         padding: 10px 18px;
         border-radius: 5px;
+        color: white;
+        font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
-        font-weight: bold;
     }
     .repo-btn:hover { background: #e63838; }
 
     .main-container {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start; /* !!! вместо stretch */
         padding: 30px 40px;
         gap: 20px;
     }
@@ -55,17 +54,21 @@
         box-shadow: 0 0 8px rgba(255,66,66,0.15);
     }
 
-    .card h3 { color: #ff4242; margin-top: 0; }
+    .card h3 {
+        margin-top: 0;
+        color: #ff4242;
+    }
 
     input, textarea, select {
         width: 100%;
         margin: 6px 0 14px;
         padding: 10px;
-        border: none;
         border-radius: 5px;
+        border: none;
         outline: none;
         background: #2a2a2a;
         color: #f5f5f5;
+        font-size: 14px;
     }
     input:focus, textarea:focus, select:focus {
         background: #333;
@@ -78,9 +81,9 @@
         padding: 10px 18px;
         border-radius: 5px;
         color: white;
+        font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
-        font-weight: bold;
     }
     .btn:hover {
         background: #e63838;
@@ -95,8 +98,15 @@
         border-radius: 8px;
         overflow: hidden;
     }
-    th, td { padding: 14px; text-align: center; }
-    th { background: #2c2c2c; color: #ff4242; }
+    th, td {
+        padding: 14px;
+        text-align: center;
+    }
+    th {
+        background: #2c2c2c;
+        color: #ff4242;
+        font-weight: bold;
+    }
     tr:nth-child(even) { background: #242424; }
     tr:hover { background: #333; }
 
@@ -104,8 +114,8 @@
         padding: 6px 12px;
         border: none;
         border-radius: 4px;
-        font-size: 13px;
         cursor: pointer;
+        font-size: 13px;
         margin: 0 3px;
     }
     .delete-btn { background: #c0392b; color: white; }
@@ -120,12 +130,14 @@
         color: #a8ff60;
         font-size: 13px;
         overflow-x: auto;
+        max-height: 400px; /* ограничение по высоте JSON-блока */
+        overflow-y: auto;
     }
 
-    /* модальное окно */
+    /* --- Модалка --- */
     .modal {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
         background: rgba(0,0,0,0.65);
         display: flex; justify-content: center; align-items: center;
         opacity: 0; pointer-events: none;
@@ -141,18 +153,23 @@
         padding: 20px;
         transform: scale(0.8);
         transition: transform 0.3s ease;
-        color: #f5f5f5;
     }
     .modal.active .modal-card { transform: scale(1); }
-    .modal-header { display: flex; justify-content: space-between; }
+    .modal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 15px;
+    }
     .modal-header h2 { margin: 0; color: #ff4242; }
     .close-btn {
-        background: transparent; border: none;
-        font-size: 22px; color: #f5f5f5; cursor: pointer;
+        background: none; border: none;
+        font-size: 22px; color: #f5f5f5;
+        cursor: pointer;
     }
     .preview-img {
         width: 100%; max-height: 200px;
-        object-fit: cover; border-radius: 6px; margin: 15px 0;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        object-fit: cover;
     }
 </style>
 </head>
@@ -213,23 +230,24 @@
 <script>
     let projects = [];
 
-    const repoUrl = "https://github.com/FresenBer4ik/FresenBer4ik.github.io";
-    const yamlUrl = "https://raw.githubusercontent.com/FresenBer4ik/FresenBer4ik.github.io/main/projects.json";
+    // <-- Укажи ссылку на RAW GitHub JSON
+    const githubJson = "https://raw.githubusercontent.com/your-username/your-repo/main/projects.json";
+    const repoUrl = "https://github.com/your-username/your-repo";
 
     function openRepo() { window.open(repoUrl, "_blank"); }
 
     window.onload = async function() {
         try {
-            let response = await fetch(yamlUrl);
-            if (response.ok) {
-                let text = await response.text();
-                projects = jsyaml.load(text); // <-- парсим YAML в объект
-                console.log("YAML из GitHub:", projects);
+            let res = await fetch(githubJson);
+            if (res.ok) {
+                projects = await res.json();
             } else {
-                console.warn("Ошибка загрузки YAML:", response.status);
+                console.warn("Ошибка github fetch:", res.status);
+                let saved = localStorage.getItem("projects");
+                if (saved) projects = JSON.parse(saved);
             }
         } catch (e) {
-            console.error("Не смог получить с GitHub:", e);
+            console.error("Fetch error:", e);
             let saved = localStorage.getItem("projects");
             if (saved) projects = JSON.parse(saved);
         }
@@ -244,7 +262,7 @@
         let access = document.getElementById('access').value;
         let desc = document.getElementById('desc').value;
 
-        if (!title) { alert("Введите название!"); return; }
+        if (!title) { alert("Введите название"); return; }
 
         let project = { title, url, tags, access, desc };
         projects.push(project);
@@ -266,31 +284,30 @@
             <th>Теги</th>
             <th>Действие</th>
         </tr>`;
-
-        projects.forEach((p, index) => {
+        projects.forEach((p, i) => {
             let row = table.insertRow();
             row.insertCell(0).innerText = p.title;
             row.insertCell(1).innerText = p.access;
-            row.insertCell(2).innerText = (p.tags || []).join(", ");
+            row.insertCell(2).innerText = (p.tags||[]).join(", ");
 
             let cell = row.insertCell(3);
 
-            let previewBtn = document.createElement("button");
-            previewBtn.innerText = "Предпросмотр";
-            previewBtn.className = "action-btn preview-btn";
-            previewBtn.onclick = () => openPreview(p);
-            cell.appendChild(previewBtn);
+            let prevBtn = document.createElement("button");
+            prevBtn.innerText = "Предпросмотр";
+            prevBtn.className = "action-btn preview-btn";
+            prevBtn.onclick = () => openPreview(p);
+            cell.appendChild(prevBtn);
 
-            let del = document.createElement("button");
-            del.innerText = "Удалить";
-            del.className = "action-btn delete-btn";
-            del.onclick = () => {
-                projects.splice(index, 1);
+            let delBtn = document.createElement("button");
+            delBtn.innerText = "Удалить";
+            delBtn.className = "action-btn delete-btn";
+            delBtn.onclick = () => {
+                projects.splice(i, 1);
                 saveLocal();
                 renderProjects();
                 updateJSON();
             };
-            cell.appendChild(del);
+            cell.appendChild(delBtn);
         });
     }
 
@@ -299,26 +316,29 @@
     }
 
     function downloadJSON() {
-        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projects, null, 4));
-        let dl = document.createElement('a');
-        dl.setAttribute("href", dataStr);
-        dl.setAttribute("download", "projects.json");
-        dl.click();
+        let data = JSON.stringify(projects, null, 4);
+        let blob = new Blob([data], {type:"application/json"});
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "projects.json";
+        a.click();
+        URL.revokeObjectURL(url);
     }
 
     function saveLocal() { localStorage.setItem("projects", JSON.stringify(projects)); }
 
-    // --- предпросмотр ---
-    function openPreview(project) {
-        document.getElementById("previewTitle").innerText = project.title;
-        document.getElementById("previewImg").src = project.url || "https://via.placeholder.com/400x200?text=No+Image";
-        document.getElementById("previewAccess").innerText = project.access;
-        document.getElementById("previewTags").innerText = (project.tags || []).join(", ");
-        document.getElementById("previewDesc").innerText = project.desc || "—";
+    function openPreview(p) {
+        document.getElementById("previewTitle").innerText = p.title;
+        document.getElementById("previewImg").src = p.url || "https://via.placeholder.com/400x200";
+        document.getElementById("previewAccess").innerText = p.access;
+        document.getElementById("previewTags").innerText = (p.tags||[]).join(", ");
+        document.getElementById("previewDesc").innerText = p.desc || "—";
         document.getElementById("previewModal").classList.add("active");
     }
-
-    function closePreview() { document.getElementById("previewModal").classList.remove("active"); }
+    function closePreview() {
+        document.getElementById("previewModal").classList.remove("active");
+    }
 </script>
 
 </body>
