@@ -1,1 +1,892 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="icon" type="image/x-icon" href="./icon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdMine Launcher - Готовый к игре лаунчер для Minecraft</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    :root {
+      --accent-color: #ff3333;
+      --accent-glow: 0 0 15px #ff3333aa;
+      --dark-bg: #0a0a0a;
+      --darker-bg: #050505;
+      --card-bg: #1a1a1a;
+      --text-light: #f0f0f0;
+      --text-gray: #aaa;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body{background:var(--dark-bg);color:var(--text-light);overflow-x:hidden;line-height:1.6;}
+    a{text-decoration:none;color:inherit;transition: all 0.3s ease;}
 
+    /* HEADER */
+    header {
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1rem 5%;z-index:1000;
+      border-bottom: 1px solid rgba(255,50,50,0.1);
+    }
+    header h1{color:var(--accent-color);text-shadow:var(--accent-glow); font-size: 1.8rem;}
+    .nav-desktop {display:flex;}
+    .nav-desktop a{margin-left:1.8rem;font-weight:500;position:relative;padding:0.2rem 0;}
+    .nav-desktop a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-color);
+      box-shadow: var(--accent-glow);
+      transition: width 0.3s ease;
+    }
+    .nav-desktop a:hover::after{width:100%;}
+    .nav-desktop a:hover{color:var(--accent-color);}
+
+    /* Mobile Nav */
+    .burger-menu {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+    }
+    .burger-menu span {
+      width: 100%;
+      height: 3px;
+      background: var(--text-light);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .burger-menu.active span:nth-child(1) {transform: rotate(45deg) translate(8px, 8px);}
+    .burger-menu.active span:nth-child(2) {opacity: 0;}
+    .burger-menu.active span:nth-child(3) {transform: rotate(-45deg) translate(8px, -8px);}
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--darker-bg);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .nav-mobile.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile a {
+      margin: 1.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    /* HERO */
+    .hero {
+      height:100vh;
+      background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://i.ibb.co/LDpXqCK6/68747470861.jpg') center/cover no-repeat fixed;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      text-align:center;position:relative;
+      padding: 0 5%;
+    }
+    .hero-content{position:relative;z-index:1;max-width:800px;}
+    .hero h2{font-size:3.5rem;color:var(--accent-color);text-shadow:0 0 25px #ff0000; margin-bottom: 1rem;}
+    .hero p{margin:1.5rem 0;color:var(--text-gray);font-size:1.3rem;}
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin: 2.5rem 0;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      text-shadow: var(--accent-glow);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      color: var(--text-gray);
+      font-size: 0.9rem;
+    }
+    .btn-main {
+      background: linear-gradient(145deg, #ff0000, #cc0000);
+      padding:1rem 2.5rem;font-size:1.2em;
+      border:none;border-radius:50px;color:#fff;font-weight:bold;
+      cursor:pointer;transition:.4s;box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-main:hover{transform:translateY(-5px);box-shadow:0 10px 25px #ff0000dd;}
+    .btn-main::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: rotate(30deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+    .btn-main:hover::after {
+      animation: shine 1.5s ease forwards;
+    }
+    @keyframes shine {
+      0% { opacity: 0; transform: rotate(30deg) translate(-50%, -50%); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: rotate(30deg) translate(50%, 50%); }
+    }
+
+    /* SECTIONS GENERAL */
+    section{
+      padding:6rem 5%;
+      text-align:center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    section h2 {
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      text-shadow: var(--accent-glow);
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+    }
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--accent-color);
+      box-shadow: var(--accent-glow);
+    }
+
+    /* FEATURES */
+    .features{background:var(--darker-bg);}
+    .features-container{
+      display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;
+    }
+    .card{
+      background:var(--card-bg);
+      border: 1px solid rgba(255,50,50,0.15);
+      border-radius:15px;
+      padding:2rem;width:280px;
+      color:var(--text-gray);transition:.4s;
+      opacity:0;transform:translateY(40px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .card.visible{opacity:1;transform:translateY(0);}
+    .card h3{color:#ff4444;margin-bottom:1rem; font-size: 1.4rem;}
+    .card i {font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent-color);}
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(255, 0, 0, 0.2);
+    }
+
+    /* GALLERY */
+    .gallery {background: var(--dark-bg);}
+    .screens{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;
+    }
+    .screens a {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .screens img{
+      width:100%; height: 180px; object-fit: cover;
+      transition:.5s;
+    }
+    .screens a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+    }
+    .screens a:hover img {
+      transform: scale(1.1);
+    }
+
+    /* SYSTEM */
+    .system {background: var(--darker-bg);}
+    .reqs{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;}
+    .req-card{
+      background:var(--card-bg);border:1px solid rgba(255,50,50,0.15);
+      border-radius:15px;padding:2rem;min-width:250px; max-width: 300px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+    .req-card:hover {
+      transform: translateY(-5px);
+    }
+    .req-card h3{color:#ff4444;margin-bottom:1.5rem;text-align:center; font-size: 1.4rem;}
+    .req-card ul{list-style:none;padding:0;}
+    .req-card li{color:#ccc;margin:1rem 0; text-align: left; padding-left: 1.5rem; position: relative;}
+    .req-card li::before {
+      content: '•';
+      color: var(--accent-color);
+      position: absolute;
+      left: 0;
+    }
+    .req-card li b{color:#ff5555;}
+
+    /* FAQ */
+    .faq {background: var(--dark-bg);}
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item{
+      margin:1rem auto;
+      max-width:100%;
+      border-bottom:1px solid rgba(255,50,50,0.15);
+      text-align:left;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .faq-item button{
+      width:100%;padding:1.2rem;background:var(--card-bg);border:none;
+      color:var(--text-light);font-size:1.1em;cursor:pointer;text-align:left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-item button i {transition: transform 0.4s ease;}
+    .faq-item button:hover{color:var(--accent-color);}
+    .faq-content{
+      max-height:0;overflow:hidden;transition:.4s ease;
+      color:var(--text-gray);padding:0 1.2rem;
+      background: var(--card-bg);
+    }
+    .faq-item.active .faq-content{max-height:200px;padding:1rem 1.2rem 1.5rem;}
+    .faq-item.active button i {transform: rotate(180deg);}
+
+    /* DOWNLOAD */
+    .download {background: var(--darker-bg);}
+    .dl-buttons{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;}
+    .dl-btn{
+      display:flex;align-items:center;gap:12px;
+      background: linear-gradient(145deg, #ff0000, #cc0000);
+      padding:1rem 2rem;border-radius:12px;
+      font-weight:bold;color:#fff;font-size:1.1em;cursor:pointer;
+      box-shadow:0 5px 15px rgba(170, 0, 0, 0.4);transition:.3s;
+      min-width: 200px;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .dl-btn img{width:28px;height:28px; filter: brightness(0) invert(1);}
+    .dl-btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 10px 25px rgba(255, 0, 0, 0.5);
+    }
+    .dl-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: rotate(30deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+    .dl-btn:hover::after {
+      animation: shine 1.5s ease forwards;
+    }
+
+    /* COMMUNITY */
+    .community {background: var(--dark-bg);}
+    .socials{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;}
+    .socials a{
+      display:flex;align-items:center;gap:10px;
+      background:var(--card-bg);padding:1rem 1.8rem;border-radius:12px;
+      color:var(--text-light);font-weight:bold;transition:.3s;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .socials a:hover{
+      background:var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: var(--accent-glow);
+    }
+
+    /* Scroll to Top Button */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 999;
+      box-shadow: var(--accent-glow);
+    }
+    .scroll-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .scroll-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px var(--accent-color);
+    }
+
+    /* Модальное окно загрузки */
+    .download-modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .download-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-content {
+      background: var(--darker-bg);
+      border: 1px solid var(--accent-color);
+      box-shadow: var(--accent-glow), 0 0 50px rgba(0,0,0,0.8);
+      border-radius: 15px;
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--text-gray);
+      transition: color 0.3s ease;
+    }
+    .close-modal:hover {
+      color: var(--accent-color);
+    }
+    .modal-content h3 {
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+    .download-steps {
+      text-align: left;
+      margin: 1.5rem auto;
+      color: var(--text-gray);
+      max-width: 300px;
+    }
+    .download-steps li {
+      margin: 0.8rem 0;
+    }
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    .modal-actions a:last-child {
+      color: var(--text-gray);
+      font-size: 0.9rem;
+    }
+    .modal-actions a:last-child:hover {
+      color: var(--accent-color);
+    }
+
+    /* Модальное окно галереи */
+    .gallery-modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.98);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .gallery-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .gallery-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+    }
+    .gallery-modal img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+    }
+    .close-gallery {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      font-size: 2.5rem;
+      color: white;
+      cursor: pointer;
+    }
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+    .gallery-nav:hover {
+      background: var(--accent-color);
+    }
+    .gallery-prev {
+      left: 20px;
+    }
+    .gallery-next {
+      right: 20px;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#000;padding:2rem;color:#666;
+      text-align:center;border-top:1px solid rgba(255,50,50,0.1);
+    }
+
+    /* MEDIA QUERIES */
+    @media (max-width: 768px) {
+      .nav-desktop {display: none;}
+      .burger-menu {display: flex;}
+      .nav-mobile {display: flex;}
+
+      header {padding: 1rem;}
+      .hero h2 {font-size: 2.5rem;}
+      .hero p {font-size: 1.1rem;}
+      .stats {gap: 2rem;}
+      .stat-number {font-size: 2rem;}
+
+      section {padding: 4rem 5%;}
+      section h2 {font-size: 2rem; margin-bottom: 2rem;}
+
+      .dl-btn {min-width: 180px; padding: 0.8rem 1.5rem;}
+      .reqs {gap: 1.5rem;}
+
+      .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+      .gallery-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
+      .gallery-prev {left: 10px;}
+      .gallery-next {right: 10px;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>EdMine Launcher</h1>
+  <nav class="nav-desktop">
+    <a href="#features">Функции</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#system">Требования</a>
+    <a href="#faq">FAQ</a>
+    <a href="#download">Скачать</a>
+  </nav>
+  <div class="burger-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="nav-mobile">
+    <a href="#features" class="mobile-nav-link">Функции</a>
+    <a href="#gallery" class="mobile-nav-link">Галерея</a>
+    <a href="#system" class="mobile-nav-link">Требования</a>
+    <a href="#faq" class="mobile-nav-link">FAQ</a>
+    <a href="#download" class="mobile-nav-link">Скачать</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2>EdMine Launcher</h2>
+    <p>Готовый к игре лаунчер для Minecraft с предустановленными модами.<br>Запусти и играй!</p>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-number">100+</span>
+        <span class="stat-label">Скачиваний</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">10+</span>
+        <span class="stat-label">Игроков онлайн</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Модов в сборке</span>
+      </div>
+    </div>
+
+    <a href="#download"><button class="btn-main">⬇ Скачать сейчас</button></a>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2>Всё готово</h2>
+  <div class="features-container">
+    <div class="card"><i class="fas fa-box-open"></i><h3>Моды включены</h3><p>EmoteCraft, SimpleVoiceChat и другие популярные моды уже установлены.</p></div>
+    <div class="card"><i class="fas fa-bolt"></i><h3>Мгновенный старт</h3><p>Скачал, установил, запустил — играй сразу.</p></div>
+    <div class="card"><i class="fas fa-plug"></i><h3>Сервер</h3><p>Подключение к серверу без проблем.</p></div>
+    <div class="card"><i class="fas fa-sync-alt"></i><h3>Автообновления</h3><p>Лаунчер всегда актуален.</p></div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <h2>Как это выглядит</h2>
+  <div class="screens">
+    <a data-src="https://i.ibb.co/G3Jr9HkQ/image.png" class="gallery-item">
+      <img src="https://i.ibb.co/G3Jr9HkQ/image.png" alt="Главное меню лаунчера">
+    </a>
+    <a data-src="https://i.ibb.co/G3Jr9HkQ/image.png" class="gallery-item">
+      <img src="https://i.ibb.co/G3Jr9HkQ/image.png" alt="Настройки лаунчера">
+    </a>
+    <a data-src="https://i.ibb.co/G3Jr9HkQ/image.png" class="gallery-item">
+      <img src="https://i.ibb.co/G3Jr9HkQ/image.png" alt">Игровой процесс">
+    </a>
+  </div>
+</section>
+
+<section class="system" id="system">
+  <h2>Системные требования</h2>
+  <div class="reqs">
+    <div class="req-card">
+      <h3>Минимальные</h3>
+      <ul>
+        <li><b>CPU:</b> 2 ядра, 2 ГГц</li>
+        <li><b>RAM:</b> 4 ГБ</li>
+        <li><b>Disk:</b> 2 ГБ HDD</li>
+      </ul>
+    </div>
+    <div class="req-card">
+      <h3>Рекомендуемые</h3>
+      <ul>
+        <li><b>CPU:</b> 4 ядра, 3 ГГц+</li>
+        <li><b>RAM:</b> 8 ГБ</li>
+        <li><b>Disk:</b> 5 ГБ SSD</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <h2>Частые вопросы</h2>
+  <div class="faq-container">
+    <div class="faq-item"><button>Нужно ли что-то устанавливать? <i class="fas fa-chevron-down"></i></button><div class="faq-content"><p>Нет! Все моды уже предустановлены в лаунчере. Просто скачайте, запустите и играйте.</p></div></div>
+    <div class="faq-item"><button>Бесплатный ли лаунчер? <i class="fas fa-chevron-down"></i></button><div class="faq-content"><p>Да, и всегда будет бесплатным.</p></div></div>
+    <div class="faq-item"><button>Какие моды включены? <i class="fas fa-chevron-down"></i></button><div class="faq-content"><p>Основные моды: EmoteCraft, SimpleVoiceChat, а также оптимизация и исправления для лучшей игры.</p></div></div>
+    <div class="faq-item"><button>Куда можно задать вопрос? <i class="fas fa-chevron-down"></i></button><div class="faq-content"><p>Пишите менеджеру: <a href="https://t.me/manager_edvardcode" target="_blank" style="color: var(--accent-color);">@manager_edvardcode</a>.</p></div></div>
+  </div>
+</section>
+
+<section class="download" id="download">
+  <h2>Скачать лаунчер</h2>
+  <div class="dl-buttons">
+    <a href="#" class="dl-btn trigger-download" data-os="Windows">
+      <img src="https://img.icons8.com/color/48/000000/windows-10.png" alt="Windows"/> Windows
+    </a>
+    <a href="#" class="dl-btn trigger-download" data-os="Linux">
+      <img src="https://img.icons8.com/color/48/000000/linux.png" alt="Linux"/> Linux
+    </a>
+    <a href="#" class="dl-btn trigger-download" data-os="macOS">
+      <img src="https://img.icons8.com/color/48/000000/mac-os.png" alt="macOS"/> macOS
+    </a>
+  </div>
+</section>
+
+<section class="community" id="community">
+  <h2>Мы в соцсетях</h2>
+  <div class="socials">
+    <a href="https://discord.gg/EdMine" target="_blank"><img src="https://img.icons8.com/color/48/ffffff/discord-logo.png" width="22" alt="Discord"/> Discord</a>
+    <a href="https://t.me/EdMine" target="_blank"><img src="https://img.icons8.com/color/48/ffffff/telegram-app.png" width="22" alt="Telegram"/> Telegram</a>
+    <a href="https://vk.com/EdMine" target="_blank"><img src="https://img.icons8.com/color/48/ffffff/vk-circled.png" width="22" alt="VK"/> VK</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 EdMine Launcher. Все права защищены.</p>
+</footer>
+
+<!-- Кнопка "Наверх" -->
+<div class="scroll-to-top" id="scrollToTop">
+  <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- Модальное окно загрузки -->
+<div class="download-modal" id="downloadModal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Скачать EdMine Launcher</h3>
+    <p>Ваша загрузка начнётся через секунду. Если этого не произошло, нажмите на кнопку ниже.</p>
+    <ol class="download-steps">
+      <li>Запустите скачанный файл установщика.</li>
+      <li>Следуйте инструкциям на экране.</li>
+      <li>Запустите лаунчер и наслаждайтесь игрой!</li>
+    </ol>
+    <div class="modal-actions">
+      <a href="./files/MCLauncher-Setup.exe" class="btn-main" id="directDownloadLink">Начать загрузку</a>
+      <a href="#system">Посмотреть системные требования</a>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно галереи -->
+<div class="gallery-modal" id="galleryModal">
+  <div class="gallery-modal-content">
+    <span class="close-gallery">&times;</span>
+    <button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button>
+    <button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button>
+    <img id="modalImage" src="" alt="">
+  </div>
+</div>
+
+<script>
+  // Плавная прокрутка для всех якорных ссылок
+  document.querySelectorAll('a[href^="#"], .mobile-nav-link').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if(targetId === '#') return;
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        const headerOffset = 80;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        // Закрываем мобильное меню после клика
+        if (this.classList.contains('mobile-nav-link')) {
+          navMobile.classList.remove('active');
+          burgerMenu.classList.remove('active');
+        }
+      }
+    });
+  });
+
+  // Бургер-меню
+  const burgerMenu = document.querySelector('.burger-menu');
+  const navMobile = document.querySelector('.nav-mobile');
+  burgerMenu.addEventListener('click', () => {
+    burgerMenu.classList.toggle('active');
+    navMobile.classList.toggle('active');
+  });
+
+  // Анимация появления карточек и секций
+  const animatedElements = document.querySelectorAll('.card, section');
+  const observerOptions = { threshold: 0.1 };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  animatedElements.forEach(el => {
+    observer.observe(el);
+  });
+
+  // Кнопка "Наверх"
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 800) {
+      scrollToTopBtn.classList.add('visible');
+    } else {
+      scrollToTopBtn.classList.remove('visible');
+    }
+  });
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // FAQ аккордеон
+  document.querySelectorAll('.faq-item button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const currentlyActive = btn.parentElement.classList.contains('active');
+      document.querySelectorAll('.faq-item.active').forEach(item => {
+        if (item !== btn.parentElement) {
+          item.classList.remove('active');
+        }
+      });
+      btn.parentElement.classList.toggle('active', !currentlyActive);
+    });
+  });
+
+  // Модальное окно для загрузки
+  const downloadModal = document.getElementById('downloadModal');
+  const directDownloadLink = document.getElementById('directDownloadLink');
+  const closeModal = document.querySelector('.close-modal');
+
+  function openDownloadModal(os) {
+    let downloadUrl = 'files/MCLauncher-Setup.exe';
+    if (os === 'Linux') downloadUrl = 'files/MCLauncher-Linux.tar.gz';
+    if (os === 'macOS') downloadUrl = 'files/MCLauncher.dmg';
+
+    directDownloadLink.setAttribute('href', downloadUrl);
+    downloadModal.classList.add('active');
+
+    // Автоматическое скачивание через 1.5 секунды
+    setTimeout(() => {
+      window.location.href = downloadUrl;
+    }, 1500);
+  }
+
+  document.querySelectorAll('.trigger-download').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const os = btn.getAttribute('data-os');
+      openDownloadModal(os);
+    });
+  });
+
+  closeModal.addEventListener('click', () => {
+    downloadModal.classList.remove('active');
+  });
+  downloadModal.addEventListener('click', (e) => {
+    if (e.target === downloadModal) {
+      downloadModal.classList.remove('active');
+    }
+  });
+
+  // Модальное окно галереи
+  const galleryModal = document.getElementById('galleryModal');
+  const modalImage = document.getElementById('modalImage');
+  const closeGallery = document.querySelector('.close-gallery');
+  const galleryNext = document.querySelector('.gallery-next');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  let currentImageIndex = 0;
+
+    function openGalleryModal(index) {
+        currentImageIndex = index;
+        modalImage.src = galleryItems[index].getAttribute('data-src');
+        galleryModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
+    }
+
+    function navigateGallery(direction) {
+        currentImageIndex += direction;
+        if (currentImageIndex < 0) currentImageIndex = galleryItems.length - 1;
+        if (currentImageIndex >= galleryItems.length) currentImageIndex = 0;
+        modalImage.src = galleryItems[currentImageIndex].getAttribute('data-src');
+    }
+
+    galleryItems.forEach((item, index) => {
+        item.addEventListener('click', () => openGalleryModal(index));
+    });
+
+    closeGallery.addEventListener('click', () => {
+        galleryModal.classList.remove('active');
+        document.body.style.overflow = ''; // Возвращаем прокрутку
+    });
+
+    galleryPrev.addEventListener('click', () => navigateGallery(-1));
+    galleryNext.addEventListener('click', () => navigateGallery(1));
+
+    // Закрытие галереи по клику на фон
+    galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
+            galleryModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Навигация по галерее клавишами
+    document.addEventListener('keydown', (e) => {
+        if (galleryModal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                galleryModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (e.key === 'ArrowLeft') navigateGallery(-1);
+            if (e.key === 'ArrowRight') navigateGallery(1);
+        }
+    });
+
+    // Инициализация: делаем герой-секцию видимой сразу
+    document.querySelector('.hero').classList.add('visible');
+</script>
+</body>
+</html>
