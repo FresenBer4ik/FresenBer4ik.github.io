@@ -22,6 +22,17 @@
         "desc": "Шуточный вирус WinLocker. Он не блокирует систему! Пароль: 125673"
     },
     {
+        "title": "Майнкрафт Лаунчер (РАЗРАБОТКА)",
+        "desc": "EdMine Launcher Лаунчер для игры Minecraft с предустановленными модами. Запусти и играй!",
+        "img": "https://i.ibb.co/GQHf2znJ/image.png",
+        "tags": [
+            "Java",
+            "C#"
+        ],
+        "link": "https://edvardcode.netlify.app/minecraft/",
+        "access": "public"
+    },
+    {
         "title": "EdLauncher",
         "desc": "Самый лучший Майнкрафт лаунчер в мире. Без вирусов 100%",
         "img": "https://i.ibb.co/8LVHyBH0/mine.png",
