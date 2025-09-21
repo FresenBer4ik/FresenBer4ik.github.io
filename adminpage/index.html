@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Админ‑панель</title>
-<link rel="icon" href="icon.png" type="image/png">    
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
@@ -216,16 +215,16 @@
 
 <header>
     <h1>Админ‑панель</h1>
-    <button class="repo-btn" onclick="openRepo()">Репозиторий</button>
+    <button class="repo-btn" onclick="openRepo()">Перейти в репозиторий</button>
 </header>
 
 <div class="main-container">
     <div class="card">
         <h3>Добавить проект</h3>
         <input type="text" id="title" placeholder="Заголовок">
-        <input type="text" id="img" placeholder="URL картинки">
+        <input type="text" id="url" placeholder="URL картинки">
         <input type="text" id="tags" placeholder="Теги (через запятую)">
-        <input type="text" id="link" placeholder="Ссылка">
+        <input type="text" id="link" placeholder="Ссылка (Играть)">
         <select id="access">
             <option value="public">Для всех</option>
             <option value="secret">Секретный</option>
@@ -370,12 +369,12 @@
 
         document.getElementById("previewContent").innerHTML = `
             <div class="preview-card">
-                <img src="${p.img || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="">
+                <img src="${p.url || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="">
                 <div class="preview-body">
                     <h3>${p.title}</h3>
                     <p>${p.desc || ""}</p>
                     <div>${tagsHtml}</div>
-                    ${p.link ? `<a href="${p.link}" target="_blank" class="play-btn">Перейти ➡️</a>` : ""}
+                    ${p.link ? `<a href="${p.link}" target="_blank" class="play-btn">Играть ➡️</a>` : ""}
                 </div>
             </div>
         `;
