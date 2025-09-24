@@ -224,7 +224,7 @@
         <input type="text" id="title" placeholder="Заголовок">
         <input type="text" id="url" placeholder="URL картинки">
         <input type="text" id="tags" placeholder="Теги (через запятую)">
-        <input type="text" id="link" placeholder="Ссылка (Играть)">
+        <input type="text" id="link" placeholder="Ссылка (Сайт)">
         <select id="access">
             <option value="public">Для всех</option>
             <option value="secret">Секретный</option>
@@ -369,7 +369,7 @@
 
         document.getElementById("previewContent").innerHTML = `
             <div class="preview-card">
-                <img src="${p.url || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="">
+                <img src="${p.img || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="">
                 <div class="preview-body">
                     <h3>${p.title}</h3>
                     <p>${p.desc || ""}</p>
