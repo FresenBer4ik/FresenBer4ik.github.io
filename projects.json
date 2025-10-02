@@ -54,4 +54,15 @@
         "link": "https://mega.nz/file/bVUE1SBJ#78gQOhcXbYylZC4GhOJyt-saXvTiHpJ3Z4uoJ_ocxfU",
         "access": "secret"
     }
+    {
+        "title": "EdUnlocker",
+        "url": "https://i.ibb.co/4RV3j2L5/image.png",
+        "tags": [
+            "C#",
+            "HTML"
+        ],
+        "link": "https://edvardcode.netlify.app/edunlocker/",
+        "access": "public",
+        "desc": "Мощный инструмент для восстановления контроля над Windows после вирусных атак."
+    }
 ]
