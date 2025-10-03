@@ -1,57 +1,35 @@
 [
-    {
-        "title": "Virus vs Antivirus",
-        "desc": "Космический шутер из AegisGuard на C# .",
-        "img": "https://i.ibb.co/wFLSbj39/image.png",
-        "tags": [
-            "HTML",
-            "C#"
-        ],
-        "link": "https://fresenber4ik.github.io/cosmosgameboss/",
-        "access": "public"
-    },
-    {
-        "title": "QuantumCheat",
-        "img": "https://i.ibb.co/6JVSJn12/image.png",
-        "tags": [
-            "Python",
-            "HTML"
-        ],
-        "link": "https://quantumcheat.pages.dev/",
-        "access": "public",
-        "desc": "Шуточный вирус WinLocker. Он не блокирует систему! Пароль: 125673"
-    },
-    {
-        "title": "Майнкрафт Лаунчер (РАЗРАБОТКА)",
-        "desc": "EdMine Launcher Лаунчер для игры Minecraft с предустановленными модами. Запусти и играй!",
-        "img": "https://i.ibb.co/GQHf2znJ/image.png",
-        "tags": [
-            "Java",
-            "C#"
-        ],
-        "link": "https://edvardcode.netlify.app/minecraft/",
-        "access": "public"
-    },
-    {
-        "title": "EdLauncher",
-        "desc": "Самый лучший Майнкрафт лаунчер в мире. Без вирусов 100%",
-        "img": "https://i.ibb.co/8LVHyBH0/mine.png",
-        "tags": [
-            "Python",
-            "C#"
-        ],
-        "link": "https://mega.nz/file/HAsTHaQQ#_n8m2WO9LfjWXFH7ZMmRPSguqCvv-xAwKpw0EAD4UQs",
-        "access": "secret"
-    },
-    {
-        "title": "AegisGuard(РАЗРАБОТКА)",
-        "desc": "Антивирус, который не только удалит, но и добавит ещё 100 вирусов.",
-        "img": "https://i.ibb.co/NnYbbPL2/image.png",
-        "tags": [
-            "C#",
-            "C++"
-        ],
-        "link": "https://mega.nz/file/bVUE1SBJ#78gQOhcXbYylZC4GhOJyt-saXvTiHpJ3Z4uoJ_ocxfU",
-        "access": "secret"
-    },
+  {
+    "title": "Virus vs Antivirus",
+    "desc": "Космический шутер из AegisGuard на C# .",
+    "img": "https://i.ibb.co/wFLSbj39/image.png",
+    "tags": [
+      "HTML",
+      "C#"
+    ],
+    "link": "https://fresenber4ik.github.io/cosmosgameboss/",
+    "access": "public"
+  },
+  {
+    "title": "EdLauncher",
+    "desc": "Самый лучший Майнкрафт лаунчер в мире. Без вирусов 100%",
+    "img": "https://i.ibb.co/8LVHyBH0/mine.png",
+    "tags": [
+      "Python",
+      "C#"
+    ],
+    "link": "https://mega.nz/file/HAsTHaQQ#_n8m2WO9LfjWXFH7ZMmRPSguqCvv-xAwKpw0EAD4UQs",
+    "access": "secret"
+  },
+  {
+    "title": "AegisGuard",
+    "desc": "Антивирус, который не только удалит, но и добавит ещё 100 вирусов.",
+    "img": "https://i.ibb.co/NnYbbPL2/image.png",
+    "tags": [
+      "C#",
+      "C++"
+    ],
+    "link": "https://mega.nz/file/bVUE1SBJ#78gQOhcXbYylZC4GhOJyt-saXvTiHpJ3Z4uoJ_ocxfU",
+    "access": "secret"
+  }
 ]
