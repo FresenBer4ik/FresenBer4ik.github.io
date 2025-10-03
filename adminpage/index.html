@@ -358,7 +358,7 @@
         a.href = url;
         a.download = "projects.json";
         a.click();
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(img);
     }
 
     function saveLocal() { localStorage.setItem("projects", JSON.stringify(projects)); }
