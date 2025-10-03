@@ -355,7 +355,7 @@
         let blob = new Blob([data], {type:"application/json"});
         let url = URL.createObjectURL(blob);
         let a = document.createElement("a");
-        a.href = img;
+        a.href = url;
         a.download = "projects.json";
         a.click();
         URL.revokeObjectURL(url);
