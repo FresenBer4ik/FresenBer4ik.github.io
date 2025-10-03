@@ -34,7 +34,7 @@
     },
     {
         "title": "QuantumCheat",
-        "url": "https://i.ibb.co/6JVSJn12/image.png",
+        "img": "https://i.ibb.co/6JVSJn12/image.png",
         "tags": [
             "Python",
             "HTML"
@@ -45,7 +45,7 @@
     },
     {
         "title": "EdMine Launcher(Разработка)",
-        "url": "https://i.ibb.co/GQHf2znJ/image.png",
+        "img": "https://i.ibb.co/GQHf2znJ/image.png",
         "tags": [
             "C#",
             "Java",
@@ -57,7 +57,7 @@
     },
     {
         "title": "EdUnlocker",
-        "url": "https://i.ibb.co/4RV3j2L5/image.png",
+        "img": "https://i.ibb.co/4RV3j2L5/image.png",
         "tags": [
             "C#",
             "HTML"
