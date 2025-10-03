@@ -355,10 +355,10 @@
         let blob = new Blob([data], {type:"application/json"});
         let url = URL.createObjectURL(blob);
         let a = document.createElement("a");
-        a.href = url;
+        a.href = img;
         a.download = "projects.json";
         a.click();
-        URL.revokeObjectURL(img);
+        URL.revokeObjectURL(url);
     }
 
     function saveLocal() { localStorage.setItem("projects", JSON.stringify(projects)); }
