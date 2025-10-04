@@ -7,50 +7,399 @@
   <link rel="icon" href="icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body{margin:0;display:flex;align-items:center;justify-content:center;
-      height:100vh;background:#0a0a0a;color:#fff;font-family:sans-serif;}
-    .login-box{background:#151515;padding:40px;border-radius:12px;text-align:center;
-      box-shadow:0 0 20px rgba(255,0,0,0.4);}
-    h2{color:#f00;margin-bottom:20px;text-shadow:0 0 15px #f33;}
-    input{width:100%;padding:12px;margin:10px 0;border:none;
-      border-radius:8px;background:#000;color:#fff;}
-    button{margin-top:15px;padding:12px 25px;background:linear-gradient(45deg,#f00,#c00);
-      border:none;border-radius:30px;color:#fff;font-weight:bold;cursor:pointer;}
-    button:hover{background:linear-gradient(45deg,#c00,#f00);box-shadow:0 0 10px #f33;}
-    p#error{color:#f66;margin-top:10px;}
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        /* Измененные цвета для блобов - красно-оранжевая тема */
+        --bg-1: #FF3333; /* Красный */
+        --bg-2: #FF6B35; /* Оранжевый */
+        --bg-3: #C70039; /* Темно-красный */
+        
+        /* Альтернативные варианты цветов (раскомментируйте нужный) */
+        
+        /* Сине-фиолетовая тема */
+        /* --bg-1: #4361EE;
+        --bg-2: #7209B7;
+        --bg-3: #3A0CA3; */
+        
+        /* Зелено-бирюзовая тема */
+        /* --bg-1: #06FFA5;
+        --bg-2: #00C9FF;
+        --bg-3: #0084FF; */
+        
+        /* Розово-фиолетовая тема */
+        /* --bg-1: #FF006E;
+        --bg-2: #C77DFF;
+        --bg-3: #7209B7; */
+    }
+
+    body {
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+        font-family: Inter;
+        font-style: normal;
+        overflow-y: auto;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(1200px 800px at 10% 10%, rgba(255, 51, 51, .08), transparent 60%),
+            radial-gradient(800px 500px at 90% 80%, rgba(255, 107, 53, .06), transparent 60%),
+            #050507;
+        filter: saturate(1.05);
+    }
+
+    .blob {
+        position: absolute;
+        width: 65vmax;
+        height: 65vmax;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: .65;
+        mix-blend-mode: screen;
+        will-change: transform;
+    }
+
+    .b1 {
+        background: radial-gradient(closest-side, var(--bg-1) 0%, transparent 70%);
+        top: -12vmax;
+        left: -12vmax;
+        animation: drift1 28s ease-in-out infinite;
+    }
+
+    .b2 {
+        background: radial-gradient(closest-side, var(--bg-2) 0%, transparent 70%);
+        bottom: -16vmax;
+        right: -12vmax;
+        animation: drift2 32s ease-in-out infinite;
+    }
+
+    .b3 {
+        background: radial-gradient(closest-side, var(--bg-3) 0%, transparent 70%);
+        top: 40%;
+        left: 55%;
+        animation: drift3 36s ease-in-out infinite;
+    }
+
+    .vignette {
+        position: absolute;
+        inset: -10%;
+        background: radial-gradient(120% 120% at 50% 50%, transparent 60%, rgba(0, 0, 0, .55) 100%);
+    }
+
+    @keyframes drift1 {
+        0% {
+            transform: translate(0, 0) scale(1)
+        }
+
+        50% {
+            transform: translate(15vmax, 5vmax) scale(1.15) rotate(10deg)
+        }
+
+        100% {
+            transform: translate(-5vmax, 10vmax) scale(.9) rotate(-8deg)
+        }
+    }
+
+    @keyframes drift2 {
+        0% {
+            transform: translate(0, 0) scale(1)
+        }
+
+        50% {
+            transform: translate(-10vmax, -5vmax) scale(1.1) rotate(-12deg)
+        }
+
+        100% {
+            transform: translate(5vmax, 0) scale(.95) rotate(8deg)
+        }
+    }
+
+    @keyframes drift3 {
+        0% {
+            transform: translate(0, 0) scale(1)
+        }
+
+        50% {
+            transform: translate(-10vmax, 10vmax) scale(1.2) rotate(6deg)
+        }
+
+        100% {
+            transform: translate(-20vmax, -10vmax) scale(.9) rotate(-6deg)
+        }
+    }
+
+    .container {
+        min-height: 400px;
+        min-width: 500px;
+        padding: 35px;
+        flex-shrink: 0;
+        border-radius: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        background: rgba(13, 13, 14, .6);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, .08);
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, .5),
+            inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+
+    .container form {
+        width: 100%;
+    }
+
+    .container form .form_header h4 {
+        color: #FFF;
+        text-align: center;
+        font-weight: 600;
+        line-height: normal;
+        font-size: 30px;
+    }
+
+    .container form .form_header p {
+        color: rgba(255, 255, 255, 0.40);
+        text-align: center;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 20px;
+        margin-top: 10px;
+    }
+
+    .container form .form_inputs {
+        margin-top: 30px;
+    }
+
+    .container form .form_inputs .form_input_box {
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .container form .form_inputs .form_input_box input {
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border-radius: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.10);
+        padding: 10px;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+    .container form .form_inputs .form_input_box input:focus {
+        border-color: rgba(255, 107, 53, 0.5);
+    }
+
+    .container form .form_inputs .form_input_box input::placeholder {
+        color: rgba(255, 255, 255, 0.40);
+    }
+
+    .container form .form_button {
+        margin-top: 20px;
+    }
+
+    .container form .form_button button {
+        width: 100%;
+        height: 50px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #FF3333, #FF6B35);
+        font-size: 20px;
+        font-weight: 500;
+        outline: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .container form .form_button button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(255, 51, 51, 0.4);
+    }
+
+    .container form .form_button button:active {
+        transform: translateY(0);
+    }
+
+    .notification-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+
+    .notification {
+        color: #fff;
+        text-align: left;
+        padding: 15px 15px 15px 15px;
+        display: flex;
+        justify-content: center;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .notification.success {
+        background-color: #242e1f;
+        border-color: #367d3a;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .notification.error {
+        background-color: #2e1f24;
+        border-color: #7d3641;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .blob {
+            animation: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        body {
+            width: 100% !important;
+        }
+
+        .container {
+            min-width: unset;
+            width: min(92vw, 520px);
+            min-height: unset;
+        }
+    }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Авторизация в Админ-Панель</h2>
-    <input type="text" id="login" placeholder="Логин">
-    <input type="password" id="pass" placeholder="Пароль">
-    <button onclick="checkLogin()">Войти</button>
-    <p id="error"></p>
+  <!-- Анимированный фон -->
+  <div class="bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Основной контейнер -->
+  <div class="container">
+    <form onsubmit="event.preventDefault(); checkLogin();">
+      <div class="form_header">
+        <h4>Авторизация в Админ-Панель</h4>
+        <p>Введите ваши учетные данные для входа</p>
+      </div>
+
+      <!-- Поля ввода -->
+      <div class="form_inputs">
+        <div class="form_input_box">
+          <input type="text" id="login" placeholder="Логин" required autocomplete="username">
+        </div>
+        <div class="form_input_box">
+          <input type="password" id="pass" placeholder="Пароль" required autocomplete="current-password">
+        </div>
+      </div>
+
+      <!-- Кнопка входа -->
+      <div class="form_button">
+        <button type="submit">Войти</button>
+      </div>
+
+      <!-- Контейнер для уведомлений -->
+      <div class="notification-container">
+        <div id="error-notification" style="display: none;"></div>
+      </div>
+    </form>
   </div>
 
   <script>
-  function checkLogin() {
-  const login = document.getElementById("login").value;
-  const pass = document.getElementById("pass").value;
+    function checkLogin() {
+      const login = document.getElementById("login").value;
+      const pass = document.getElementById("pass").value;
+      const errorDiv = document.getElementById("error-notification");
 
-  // Массив допустимых пользователей
-  const VALID_USERS = [
-    { login: "EdvardCode", pass: "passhackadmin" },
-    { login: "admin", pass: "password123" },
-    { login: "moderator", pass: "modpass2025" }
-    // Добавляйте сколько угодно строк
-  ];
+      // Массив допустимых пользователей
+      const VALID_USERS = [
+        { login: "EdvardCode", pass: "passhackadmin" },
+        { login: "admin", pass: "password123" },
+        { login: "moderator", pass: "modpass2025" }
+        // Добавляйте сколько угодно строк
+      ];
 
-  // Проверяем, есть ли такая пара в массиве
-  const isValid = VALID_USERS.some(user => user.login === login && user.pass === pass);
+      // Проверяем, есть ли такая пара в массиве
+      const isValid = VALID_USERS.some(user => user.login === login && user.pass === pass);
 
-  if (isValid) {
-    window.location.href = "/adminpage";
-  } else {
-    document.getElementById("error").textContent = "❌ Неправильный логин или пароль!";
-  }
-}
+      if (isValid) {
+        // Показываем уведомление об успехе
+        errorDiv.className = "notification success";
+        errorDiv.innerHTML = "✓ Успешная авторизация!";
+        errorDiv.style.display = "flex";
+        
+        setTimeout(() => {
+          window.location.href = "/adminpage";
+        }, 1000);
+      } else {
+        // Показываем уведомление об ошибке
+        errorDiv.className = "notification error";
+        errorDiv.innerHTML = "✗ Неправильный логин или пароль!";
+        errorDiv.style.display = "flex";
+        
+        // Скрываем через 3 секунды
+        setTimeout(() => {
+          errorDiv.style.display = "none";
+        }, 3000);
+      }
+    }
+
+    // Добавим обработку Enter в полях
+    document.getElementById("login").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkLogin();
+      }
+    });
+
+    document.getElementById("pass").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkLogin();
+      }
+    });
   </script>
 </body>
 </html>
