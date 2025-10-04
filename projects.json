@@ -65,5 +65,15 @@
         "link": "https://edvardcode.netlify.app/edunlocker/",
         "access": "public",
         "desc": "Мощный инструмент для восстановления контроля над Windows после вирусных атак."
+    },
+    {
+        "title": "SpaceCollector",
+        "img": "https://i.ibb.co/cX19hSVS/image.png",
+        "tags": [
+            "C#"
+        ],
+        "link": "https://mega.nz/file/qEtEnC6D#8VvSuUxdsgAJjDczJUgMkc05bjEL-D1_B1gQgEJ3Mr0",
+        "access": "public",
+        "desc": "2D игра где ты играешь за ракету и тебе нужно собирать звёзды, остерегаясь астероидов."
     }
 ]
