@@ -62,7 +62,7 @@
             "C#",
             "HTML"
         ],
-        "link": "https://edvardcode.netlify.app/edunlocker/",
+        "link": "https://github.com/EdvardCode/edunlocker",
         "access": "public",
         "desc": "Мощный инструмент для восстановления контроля над Windows после вирусных атак."
     },
