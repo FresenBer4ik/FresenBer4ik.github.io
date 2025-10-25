@@ -364,13 +364,11 @@
         <li><a href="#contact">Контакты</a></li>
         <li><a href="/clicker">Кликер</a></li>
         <li><a href="login.html">Вход</a></li>
-
-                <li>
+        <li>
           <a href="https://uploader-f4hn.onrender.com/" target="_blank" rel="noopener noreferrer">
             Отправить
           </a>
         </li>
-        
       </ul>
     </nav>
   </div>
@@ -390,9 +388,11 @@
     <p class="counter">Всего проектов: <span id="projectCount"></span></p>
     <div class="tabs">
       <button class="tab-btn active" data-tab="public">Для всех</button>
+      <button class="tab-btn" data-tab="games">ИГРЫ</button>
       <button class="tab-btn" data-tab="secret">Для НЕДОХАКЕРЫ</button>
     </div>
     <div id="public" class="tab-content active"><div class="works-grid"></div></div>
+    <div id="games" class="tab-content"><div class="works-grid"></div></div>
     <div id="secret" class="tab-content"><div class="works-grid"></div></div>
   </div>
 </section>
@@ -425,79 +425,117 @@
 
 <script>
   // Fade-up
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show");});
-  },{threshold:0.2});
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("show"); });
+  }, { threshold: 0.2 });
 
   // typing
-  const typedText=document.querySelector(".typed");
-  if(typedText){const fullText=typedText.textContent;typedText.textContent="";let i=0;(function t(){if(i<fullText.length){typedText.textContent+=fullText.charAt(i);i++;setTimeout(t,80);}})();}
+  const typedText = document.querySelector(".typed");
+  if (typedText) {
+    const fullText = typedText.textContent;
+    typedText.textContent = "";
+    let i = 0;
+    (function t() {
+      if (i < fullText.length) {
+        typedText.textContent += fullText.charAt(i);
+        i++;
+        setTimeout(t, 80);
+      }
+    })();
+  }
 
   // вкладки+логин
-  const tabBtns=document.querySelectorAll(".tab-btn");
-  const contents=document.querySelectorAll(".tab-content");
-  const modal=document.getElementById("loginModal");
-  const loginI=document.getElementById("loginInput");
-  const passI=document.getElementById("passInput");
-  const error=document.getElementById("loginError");
-  const closeBtn=document.getElementById("closeModal");
-  let unlocked=false;
-  const VALID_LOGIN="nedohackers", VALID_PASS="hack";
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const contents = document.querySelectorAll(".tab-content");
+  const modal = document.getElementById("loginModal");
+  const loginI = document.getElementById("loginInput");
+  const passI = document.getElementById("passInput");
+  const error = document.getElementById("loginError");
+  const closeBtn = document.getElementById("closeModal");
+  let unlocked = false;
+  const VALID_LOGIN = "nedohackers", VALID_PASS = "hack";
 
-  tabBtns.forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const tabId=btn.dataset.tab;
-      if(tabId==="secret" && !unlocked){
-        modal.style.display="flex";loginI.value="";passI.value="";error.textContent="";return;
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tabId = btn.dataset.tab;
+      
+      // Только вкладка "secret" требует пароль
+      if (tabId === "secret" && !unlocked) {
+        modal.style.display = "flex";
+        loginI.value = "";
+        passI.value = "";
+        error.textContent = "";
+        return;
       }
-      switchTab(btn,tabId);
+      
+      // Вкладка "games" доступна без пароля
+      switchTab(btn, tabId);
     });
   });
 
-  document.getElementById("submitLogin").onclick=()=>{
-    if(loginI.value===VALID_LOGIN && passI.value===VALID_PASS){
-      unlocked=true;modal.style.display="none";
-      switchTab(document.querySelector('.tab-btn[data-tab="secret"]'),"secret");
-    } else{error.textContent="❌ Неправильный логин или пароль. ВРЕМЕННО: Логин nedohackers, Пароль hack"}
+  document.getElementById("submitLogin").onclick = () => {
+    if (loginI.value === VALID_LOGIN && passI.value === VALID_PASS) {
+      unlocked = true;
+      modal.style.display = "none";
+      
+      // После успешного входа переключаемся на ту вкладку, которую хотели открыть
+      const activeTab = document.querySelector('.tab-btn.active');
+      const tabId = activeTab ? activeTab.dataset.tab : 'public';
+      switchTab(document.querySelector(`.tab-btn[data-tab="${tabId}"]`), tabId);
+    } else {
+      error.textContent = "❌ Неправильный логин или пароль. ВРЕМЕННО: Логин nedohackers, Пароль hack";
+    }
   };
 
-  function switchTab(btn,id){
-    tabBtns.forEach(b=>b.classList.remove("active"));
-    contents.forEach(c=>c.classList.remove("active"));
+  function switchTab(btn, id) {
+    tabBtns.forEach(b => b.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(id).classList.add("active");
   }
 
   // закрытие модалки
-  closeBtn.onclick=()=>modal.style.display="none";
-  window.onclick=(e)=>{if(e.target===modal) modal.style.display="none";}
-  window.onkeydown=(e)=>{if(e.key==="Escape") modal.style.display="none";}
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; }
+  window.onkeydown = (e) => { if (e.key === "Escape") modal.style.display = "none"; }
 
   // ДИНАМИЧЕСКАЯ ПОДГРУЗКА
   fetch("projects.json")
-    .then(res=>res.json())
-    .then(data=>{
-      const publicGrid=document.querySelector("#public .works-grid");
-      const secretGrid=document.querySelector("#secret .works-grid");
-      data.forEach(p=>{
-        const card=document.createElement("div");
+    .then(res => res.json())
+    .then(data => {
+      const publicGrid = document.querySelector("#public .works-grid");
+      const gamesGrid = document.querySelector("#games .works-grid");
+      const secretGrid = document.querySelector("#secret .works-grid");
+      data.forEach(p => {
+        const card = document.createElement("div");
         card.classList.add("work-card");
-        card.innerHTML=`
+        
+        // Определяем текст кнопки в зависимости от типа
+        let buttonText = "Перейти ➜";
+        if (p.access === "games") buttonText = "🎮 Играть ➜";
+        if (p.access === "secret") buttonText = "Скачать ➜";
+        
+        card.innerHTML = `
           <img src="${p.img}" alt="${p.title}" class="work-img">
           <div class="work-info">
             <h3 class="work-title">${p.title}</h3>
             <p class="work-desc">${p.desc}</p>
-            ${p.tags.map(tag=>`<span class="tech-tag">${tag}</span>`).join("")}
-            <a href="${p.link}" target="_blank" class="work-link">${p.access==="public"?"Перейти ➜":"Скачать ➜"}</a>
+            ${p.tags.map(tag => `<span class="tech-tag">${tag}</span>`).join("")}
+            <a href="${p.link}" target="_blank" class="work-link">${buttonText}</a>
           </div>`;
-        (p.access==="public"?publicGrid:secretGrid).appendChild(card);
+        
+        // Распределяем по вкладкам
+        if (p.access === "games") {
+          gamesGrid.appendChild(card);
+        } else if (p.access === "secret") {
+          secretGrid.appendChild(card);
+        } else {
+          publicGrid.appendChild(card);
+        }
         observer.observe(card);
       });
-      document.getElementById("projectCount").textContent=data.length;
+      document.getElementById("projectCount").textContent = data.length;
     });
 </script>
 </body>
 </html>
-
-
-
