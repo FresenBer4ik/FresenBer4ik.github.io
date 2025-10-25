@@ -8,7 +8,7 @@
             "C#"
         ],
         "link": "https://edvardcode.github.io/virusvsantivirus/",
-        "access": "public"
+        "access": "games"
     },
     {
         "title": "EdLauncher",
@@ -73,7 +73,20 @@
             "C#"
         ],
         "link": "https://mega.nz/file/qEtEnC6D#8VvSuUxdsgAJjDczJUgMkc05bjEL-D1_B1gQgEJ3Mr0",
-        "access": "public",
+        "access": "games",
         "desc": "2D игра где ты играешь за ракету и тебе нужно собирать звёзды, остерегаясь астероидов."
+    },
+    {
+        "title": "Космический Архитектор",
+        "img": "https://i.ibb.co/PG6ztDrZ/image.png",
+        "url": "https://edvardcode.github.io/spacearchitect/",
+        "tags": [
+            "HTML",
+            "JS",
+            "CSS"
+        ],
+        "link": "https://edvardcode.github.io/spacearchitect/",
+        "access": "games",
+        "desc": "Игра в духе «Алхимия», но только в космосе!"
     }
 ]
