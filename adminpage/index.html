@@ -273,6 +273,11 @@
         color: var(--warning);
     }
 
+    .status-games {
+        background: rgba(155, 89, 182, 0.2);
+        color: #9b59b6;
+    }
+
     .action-btn {
         padding: 6px 10px; /* Компактнее */
         border: none;
@@ -581,6 +586,7 @@
             <label for="access">Уровень доступа</label>
             <select id="access">
                 <option value="public">Для всех</option>
+                <option value="games">Игры</option>
                 <option value="secret">Секретный</option>
             </select>
         </div>
@@ -632,7 +638,7 @@
             <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Доступ</th>
+                    <th>Тип</th>
                     <th>Теги</th>
                     <th>Действия</th>
                 </tr>
@@ -699,8 +705,8 @@
 
         let project = { 
             title, 
-            img: url,  // Используем img вместо url для совместимости
-            url: link, // А это будет ссылка на проект
+            img: url,
+            url: link,
             tags, 
             link, 
             access, 
@@ -718,7 +724,6 @@
         document.getElementById('link').value = "";
         document.getElementById('desc').value = "";
         
-        // Показать уведомление об успехе
         showNotification(`Проект "${title}" успешно добавлен!`);
     }
 
@@ -734,11 +739,19 @@
             let titleCell = row.insertCell(0);
             titleCell.innerText = p.title;
             
-            // Доступ
+            // Тип
             let accessCell = row.insertCell(1);
             let accessBadge = document.createElement('span');
             accessBadge.className = `status-badge status-${p.access}`;
-            accessBadge.innerText = p.access === 'public' ? 'Публичный' : 'Секретный';
+            
+            let statusText = '';
+            switch(p.access) {
+                case 'public': statusText = 'Публичный'; break;
+                case 'games': statusText = 'Игры'; break;
+                case 'secret': statusText = 'Секретный'; break;
+                default: statusText = p.access;
+            }
+            accessBadge.innerText = statusText;
             accessCell.appendChild(accessBadge);
             
             // Теги
@@ -782,7 +795,6 @@
             const jsonText = document.getElementById('jsonOutput').textContent;
             const parsedProjects = JSON.parse(jsonText);
             
-            // Проверяем, что это массив
             if (Array.isArray(parsedProjects)) {
                 projects = parsedProjects;
                 saveLocal();
@@ -790,7 +802,6 @@
                 showNotification("Проекты обновлены из JSON");
             }
         } catch (e) {
-            // Игнорируем ошибки при вводе
             console.log("Некорректный JSON при вводе");
         }
     }
@@ -833,13 +844,9 @@
         localStorage.setItem("projects", JSON.stringify(projects)); 
     }
 
-    // Предпросмотр карточки - ИСПРАВЛЕННАЯ ВЕРСИЯ
+    // Предпросмотр карточки
     function openPreview(p) {
-        console.log("Opening preview for:", p); // Для отладки
-        
         const tagsHtml = (p.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(" ");
-
-        // Используем p.img для изображения (исправлено!)
         const imageUrl = p.img || p.url || 'https://via.placeholder.com/400x200?text=No+Image';
         
         document.getElementById("previewContent").innerHTML = `
@@ -849,7 +856,7 @@
                     <h3>${p.title || 'Без названия'}</h3>
                     <p>${p.desc || "Описание отсутствует"}</p>
                     <div>${tagsHtml || '<span class="tag">Нет тегов</span>'}</div>
-                    ${p.link ? `<a href="${p.link}" target="_blank" class="play-btn">Перейти к проекту ➡️</a>` : "<p style='color: #777; margin-top: 15px;'>Ссылка на проект отсутствует</p>"}
+                    ${p.link ? `<a href="${p.link}" target="_blank" class="play-btn">${p.access === 'games' ? '🎮 Играть сейчас' : 'Перейти к проекту'} ➡️</a>` : "<p style='color: #777; margin-top: 15px;'>Ссылка на проект отсутствует</p>"}
                 </div>
             </div>
         `;
