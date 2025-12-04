@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как переустановить Windows? - EdvardCode</title>
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 7, 58, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 7, 58, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 7, 58, 0.05) 0%, transparent 50%),
+                linear-gradient(45deg, #0a0000 0%, #1a0000 50%, #0a0000 100%);
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #ff073a 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 25s; opacity: 0.1; }
+        .particle:nth-child(2) { width: 150px; height: 150px; top: 60%; left: 80%; animation-duration: 30s; opacity: 0.05; }
+        .particle:nth-child(3) { width: 80px; height: 80px; top: 80%; left: 40%; animation-duration: 20s; opacity: 0.08; }
+        .particle:nth-child(4) { width: 120px; height: 120px; top: 30%; left: 60%; animation-duration: 35s; opacity: 0.06; }
+        .particle:nth-child(5) { width: 90px; height: 90px; top: 50%; left: 10%; animation-duration: 28s; opacity: 0.07; }
+        .particle:nth-child(6) { width: 200px; height: 200px; top: 70%; left: 70%; animation-duration: 40s; opacity: 0.03; }
+        .particle:nth-child(7) { width: 60px; height: 60px; top: 20%; left: 90%; animation-duration: 22s; opacity: 0.09; }
+        .particle:nth-child(8) { width: 130px; height: 130px; top: 40%; left: 30%; animation-duration: 32s; opacity: 0.04; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 50px) rotate(90deg); }
+            50% { transform: translate(50px, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+        }
+
+        body { 
+            font-family: Arial; 
+            color: #fff; 
+            background: #0a0000; 
+            min-height: 100vh;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        header {
+            position: sticky; top: 10px; width: 90%; padding: 15px; border-radius: 35px; margin: 20px auto;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(19px); border: 1px solid #ff073a20;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-size: 20px; font-weight: bold; }
+        .site-icon { width: 40px; height: 40px; background: #ff073a; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav a { padding: 8px 18px; border-radius: 20px; text-decoration: none; color: #fff; transition: 0.2s; }
+        nav a:hover { background-color: #ff073a24; color: #ff073a; }
+        
+        main { width: 90%; margin: 0 auto; padding: 20px 0; }
+        
+        .guide-header { text-align: center; padding: 40px 20px; }
+        .guide-header h1 { font-size: 2.5em; text-shadow: 0 0 10px #ff073a; margin-bottom: 20px; }
+        .guide-header p { font-size: 1.2em; color: #ccc; line-height: 1.6; }
+        
+        .guide-content {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 1000px;
+            border: 1px solid #ff073a20;
+            backdrop-filter: blur(19px);
+        }
+        
+        .step {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border-left: 4px solid #ff073a;
+        }
+        
+        .step h3 {
+            color: #ff073a;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .step p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .step ul, .step ol {
+            color: #ccc;
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .step li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .warning {
+            background: rgba(255, 7, 58, 0.1);
+            border: 1px solid #ff073a;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning h4 {
+            color: #ff073a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        footer { 
+            color: #fff; text-align: center; margin: 40px auto 20px; padding: 20px; width: 12%;
+            display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px;
+            border-radius: 50px; background: rgba(255,255,255,0.05); backdrop-filter: blur(19px); border: 1px solid #ff073a20;
+            max-width: 400px; min-width: 400px;
+        }
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            margin-top: 5px;
+            border-radius: 10px;
+            transition: 0.1s linear;
+        }
+        .social-link:hover .social-icon {
+            box-shadow: 0 0 0 4px #ff073a;
+            background-color: #ff073a20;
+        }
+        
+        @media (max-width: 768px) {
+            header { width: 95%; flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+            .guide-header h1 { font-size: 2em; }
+            .guide-content { padding: 20px; margin: 10px; }
+            main { width: 95%; }
+            footer { max-width: 150px; min-width: 130px; }
+        }
+        @media (max-width: 440px){
+            #trademark{ display: none; }
+            footer{ max-width: 150px; min-width: 130px; }
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || e.keyCode === 123 || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'u')) e.preventDefault();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="EdvardCode" class="site-icon">
+            EdvardCode
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="guide-header">
+            <h1>Как переустановить Windows?</h1>
+            <p>Подробное руководство по переустановке Windows с сохранением данных</p>
+        </section>
+
+        <div class="guide-content">
+            <!-- ВСТАВЬТЕ СВОЙ ТЕКСТ ЗДЕСЬ -->
+            <div class="step">
+                <h3>📝 Шаг 1: Подготовка к переустановке</h3>
+                <p>Перед началом переустановки Windows необходимо выполнить несколько важных подготовительных действий:</p>
+                <ul>
+                    <li>Создайте резервную копию всех важных данных</li>
+                    <li>Сохраните лицензионный ключ Windows (если есть)</li>
+                    <li>Подготовьте установочную флешку с Windows</li>
+                    <li>Скачайте драйверы для вашего оборудования</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3>💾 Шаг 2: Создание загрузочной флешки</h3>
+                <p>Для создания загрузочной флешки вам понадобится:</p>
+                <ol>
+                    <li>USB-флешка объемом не менее 8 ГБ</li>
+                    <li>Образ Windows в формате ISO</li>
+                    <li>Программа Rufus или Media Creation Tool</li>
+                </ol>
+                <p>Запустите программу Rufus, выберите флешку, укажите образ Windows и нажмите "Старт".</p>
+            </div>
+
+            <div class="step">
+                <h3>⚙️ Шаг 3: Настройка BIOS/UEFI</h3>
+                <p>Для загрузки с флешки необходимо:</p>
+                <ul>
+                    <li>Перезагрузить компьютер и войти в BIOS/UEFI (клавиша F2, Del, F12)</li>
+                    <li>В разделе Boot установить приоритет загрузки с USB</li>
+                    <li>Сохранить настройки и выйти</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h4>⚠️ Важное предупреждение</h4>
+                <p>При переустановке Windows все данные на системном диске будут удалены. Убедитесь, что вы сохранили все важные файлы!</p>
+            </div>
+
+            <div class="step">
+                <h3>🖥️ Шаг 4: Процесс установки Windows</h3>
+                <p>После загрузки с флешки:</p>
+                <ol>
+                    <li>Выберите язык и раскладку клавиатуры</li>
+                    <li>Нажмите "Установить сейчас"</li>
+                    <li>Введите лицензионный ключ (или пропустите)</li>
+                    <li>Выберите версию Windows</li>
+                    <li>Примите условия лицензии</li>
+                    <li>Выберите "Выборочная установка"</li>
+                    <li>Удалите старые разделы и создайте новые</li>
+                    <li>Дождитесь завершения установки</li>
+                </ol>
+            </div>
+
+            <div class="step">
+                <h3>🔧 Шаг 5: Установка драйверов и программ</h3>
+                <p>После установки Windows:</p>
+                <ul>
+                    <li>Установите драйверы для видеокарты, звука, сетевых устройств</li>
+                    <li>Обновите Windows через Центр обновления</li>
+                    <li>Установите необходимые программы</li>
+                    <li>Восстановите данные из резервной копии</li>
+                </ul>
+            </div>
+            <!-- КОНЕЦ ВАШЕГО ТЕКСТА -->
+        </div>
+    </main>
+
+  <footer>
+        <a href="https://t.me/edvardcodetg" class="social-link" target="_blank" rel="noopener noreferrer">
+            <img src="icons/telegram.png" alt="Telegram" class="social-icon">
+        </a>
+        <a href="https://github.com/edvardcode" class="social-link" target="_blank" rel="noopener noreferrer">
+            <img src="icons/github.png" alt="GitHub" class="social-icon">
+        </a>
+    <a href="https://youtube.com/edvardcode" class="social-link" target="_blank" rel="noopener noreferrer">
+        <img src="icons/yt.png" alt="youtube" class="social-icon">
+        </a>
+        <p id="trademark">© 2025 EdvardCode</p>
+    </footer>
+</body>
+</html>

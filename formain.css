@@ -1,0 +1,58 @@
+/* Специфичные стили для главной страницы */
+
+.hero {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+#welcome {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.button-menu-section {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.row a {
+    position: relative;
+    z-index: 2;
+}
+
+/* Эффект градиентной рамки */
+.row a::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff073a, transparent, #ff073a);
+    border-radius: 14px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.row a:hover::after {
+    opacity: 1;
+}

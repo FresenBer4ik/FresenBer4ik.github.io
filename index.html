@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdvardCode - Главная</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9240026161894199"
+    crossorigin="anonymous"></script>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="formain.css">
+
+    <!-- Скрипты безопасности (ОСТАВЛЯЕМ по вашему желанию) -->
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
+            if (e.ctrlKey && e.key === 'u') e.preventDefault();
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    </script>
+
+    <!-- Улучшенные мета-теги для SEO -->
+    <meta property="og:title" content="EdvardCode - Скачать сборки Windows, игры, утилиты">
+    <meta property="og:description" content="EdvardCode - разработчик. Веб-разработка, Desktop приложения, скрипты. Скачать сборки Windows, игры, утилиты.">
+    <meta property="og:image" content="images/og-image.png">
+    <meta name="description" content="EdvardCode - разработчик. Скачать сборки Windows, игры, утилиты. Веб-разработка, Desktop приложения, скрипты.">
+    <meta name="keywords" content="EdvardCode, Windows сборки, скачать игры, веб-разработка, программы, утилиты">
+    
+    <!-- Schema.org разметка -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "EdvardCode",
+        "url": "https://ваш-сайт.ru/",
+        "description": "Сайт разработчика EdvardCode - сборки Windows, игры, утилиты",
+        "author": {
+            "@type": "Person",
+            "name": "EdvardCode"
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Снежинки будут здесь -->
+    <div id="snowflakes-container"></div>
+
+    <header>
+        <a href="index" class="logo">
+            <img src="images/logo.png" alt="Логотип EdvardCode" class="site-icon">
+            EdvardCode
+        </a>
+        <nav>
+            <!-- Навигация для десктопа -->
+            <ul>
+                <li><a href="index">Главная</a></li>
+                <li><a href="builds">Сборки</a></li>
+                <li><a href="windows">Windows ISO</a></li>
+                <li><a href="games">Игры</a></li>
+            </ul>
+        </nav>
+        <div id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Кнопка включения снега -->
+    <div class="snowflake-toggle">
+        <button id="snowToggle" aria-label="Включить снегопад" title="Включить/выключить снег">
+            ❄️
+            <span class="snow-status">Выкл</span>
+        </button>
+    </div>
+
+    <main>
+        <section class="hero">
+            <h1 id="welcome">Добро пожаловать на сайт EdvardCode!</h1>
+            <p id="description">Это сайт EdvardCode - разработчика и энтузиаста.<br>
+                Специализация: Веб-разработка, Desktop, Скрипты<br>
+                Здесь вы можете скачать мои работы, игры и многое другое!
+            </p>
+        </section>
+
+        <div class="page">
+            <section class="button-menu-section">
+                <div class="row">
+                    <a href="builds" class="menu-button">
+                        <img src="icons/package.png" alt="Иконка сборки" class="button-icon">
+                        Сборка от EdvardCode
+                    </a>
+                    <a href="windows" class="menu-button">
+                        <img src="icons/windows.png" alt="Иконка Windows" class="button-icon">
+                        Официальные ISO Windows
+                    </a>
+                </div>
+                <div class="row">
+                    <a href="https://edvardcode.github.io/edunlocker/" class="menu-button" target="_blank">
+                        <img src="icons/edunlocker.png" alt="Иконка EdUnlocker" class="button-icon">
+                        Скачать EdUnlocker
+                    </a>
+                    <a href="games.html" class="menu-button">
+                        <img src="icons/games.png" alt="Иконка игр" class="button-icon">
+                        Игры
+                    </a>
+                </div>
+                <div class="row">
+                    <a href="https://edvardcode.github.io/quantumcheat/" class="menu-button" target="_blank">
+                        <img src="icons/cheat.png" alt="Иконка чита" class="button-icon">
+                        Fake чит QuantumCheat
+                    </a>
+                    <a href="https://edvardcode.netlify.app/minecraft/" class="menu-button" target="_blank">
+                        <img src="icons/mine.png" alt="Иконка Minecraft" class="button-icon">
+                        EdMine Launcher(Разработка)
+                    </a>
+                </div>
+                <div class="row">
+                    <a href="https://uploader-f4hn.onrender.com/" class="menu-button" target="_blank">
+                        <img src="icons/files.png" alt="Иконка файлов" class="button-icon">
+                        Отправить файлы
+                    </a>
+                    <a href="reinstall-windows.html" class="menu-button">
+                        <img src="icons/tutor.png" alt="Иконка инструкции" class="button-icon">
+                        Как переустановить Windows?
+                    </a>
+                </div>
+                <div class="row">
+                    <a href="https://t.me/edvardcodetg" class="menu-button" target="_blank">
+                        <img src="icons/telegram.png" alt="Иконка Telegram" class="button-icon">
+                        Telegram канал
+                    </a>
+                    <a href="https://boosty.to/edvardcode" class="menu-button" target="_blank">
+                        <img src="icons/boosty.png" alt="Иконка Boosty" class="button-icon">
+                        Поддержать
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://t.me/edvardcodetg" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <img src="icons/telegram.png" alt="Telegram" class="social-icon">
+        </a>
+        <a href="https://github.com/edvardcode" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <img src="icons/github.png" alt="GitHub" class="social-icon">
+        </a>
+        <a href="https://youtube.com/edvardcode" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <img src="icons/yt.png" alt="YouTube" class="social-icon">
+        </a>
+        <p id="trademark">© 2025 EdvardCode</p>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="burger.js"></script>
+    <script src="snow.js"></script>
+</body>
+</html>
