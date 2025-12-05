@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows ISO | EdvardCode</title>
+    
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="base.css">
+    
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || e.keyCode === 123) e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
+            if (e.ctrlKey && e.key === 'u') e.preventDefault();
+        });
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="EdvardCode" class="site-icon">
+            EdvardCode
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="builds.html">Сборки</a></li>
+                <li><a href="windows.html" class="active-link">Windows ISO</a></li>
+                <li><a href="games.html">Игры</a></li>
+            </ul>
+        </nav>
+        <div id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Windows ISO</h1>
+            <p>Скачать Windows 11 и Windows 10 с MEGA</p>
+        </section>
+
+        <div class="page">
+            <!-- Windows 11 -->
+            <section class="os-section">
+                <h2>Windows 11</h2>
+                
+                <div class="iso-grid">
+                    <div class="iso-card">
+                        <h3>Windows 11 23H2 Pro</h3>
+                        <div class="iso-info">
+                            <p><strong>Версия:</strong> 23H2 (2024)</p>
+                            <p><strong>Разрядность:</strong> 64-bit</p>
+                            <p><strong>Язык:</strong> Русский</p>
+                            <p><strong>Размер:</strong> 5.8 GB</p>
+                        </div>
+                        <a href="https://mega.nz/ваша-ссылка-win11-23h2" class="download-btn" target="_blank">
+                            Скачать с MEGA
+                        </a>
+                    </div>
+
+                    <div class="iso-card">
+                        <h3>Windows 11 22H2 Home</h3>
+                        <div class="iso-info">
+                            <p><strong>Версия:</strong> 22H2 (2023)</p>
+                            <p><strong>Разрядность:</strong> 64-bit</p>
+                            <p><strong>Язык:</strong> Русский</p>
+                            <p><strong>Размер:</strong> 5.5 GB</p>
+                        </div>
+                        <a href="https://mega.nz/ваша-ссылка-win11-22h2" class="download-btn" target="_blank">
+                            Скачать с MEGA
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Windows 10 -->
+            <section class="os-section">
+                <h2>Windows 10</h2>
+                
+                <div class="iso-grid">
+                    <div class="iso-card">
+                        <h3>Windows 10 22H2 Pro</h3>
+                        <div class="iso-info">
+                            <p><strong>Версия:</strong> 22H2 (2023)</p>
+                            <p><strong>Разрядность:</strong> 64-bit</p>
+                            <p><strong>Язык:</strong> Русский</p>
+                            <p><strong>Размер:</strong> 4.9 GB</p>
+                        </div>
+                        <a href="https://mega.nz/ваша-ссылка-win10-22h2" class="download-btn" target="_blank">
+                            Скачать с MEGA
+                        </a>
+                    </div>
+
+                    <div class="iso-card">
+                        <h3>Windows 10 21H2 Home</h3>
+                        <div class="iso-info">
+                            <p><strong>Версия:</strong> 21H2 (2022)</p>
+                            <p><strong>Разрядность:</strong> 64-bit</p>
+                            <p><strong>Язык:</strong> Русский</p>
+                            <p><strong>Размер:</strong> 4.7 GB</p>
+                        </div>
+                        <a href="https://mega.nz/ваша-ссылка-win10-21h2" class="download-btn" target="_blank">
+                            Скачать с MEGA
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://t.me/edvardcodetg" class="social-link" target="_blank">
+            <img src="icons/telegram.png" alt="Telegram" class="social-icon">
+        </a>
+        <a href="https://github.com/edvardcode" class="social-link" target="_blank">
+            <img src="icons/github.png" alt="GitHub" class="social-icon">
+        </a>
+        <a href="https://youtube.com/edvardcode" class="social-link" target="_blank">
+            <img src="icons/yt.png" alt="YouTube" class="social-icon">
+        </a>
+        <p id="trademark">© 2025 EdvardCode</p>
+    </footer>
+
+    <script src="burger.js"></script>
+</body>
+</html>
