@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="icons/windows.png" alt="Windows">
             Официальные ISO Windows
         </a>
-        <a href="edvardtools" class="menu-item" id="edvardtoolsburger">
+        <a href="edunlocker" class="menu-item" id="edvardtoolsburger">
             <img src="icons/tools.png" alt="Инструменты">
             Скачать EdUnlocker
         </a>
-        <a href="edvardbench" class="menu-item">
+        <a href="games" class="menu-item">
             <img src="icons/benchmark.png" alt="Игры">
             Игры
         </a>
@@ -119,3 +119,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
