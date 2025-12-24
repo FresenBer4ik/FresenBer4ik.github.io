@@ -27,22 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="icons/benchmark.png" alt="Игры">
             Игры
         </a>
-        <a href="edvardblock" class="menu-item">
-            <img src="icons/block.png" alt="Блокировщик">
-            Блокировщик рекламы
-        </a>
-        <a href="edvardwiki" class="menu-item">
-            <img src="icons/wiki.png" alt="Вики">
-            EdvardWiki
-        </a>
-        <a href="win_pe" class="menu-item">
-            <img src="icons/pe.png" alt="Windows PE">
-            Windows PE от EdvardCode
-        </a>
-        <a href="faq" class="menu-item">
-            <img src="icons/faq.png" alt="FAQ">
-            Часто задаваемые вопросы
-        </a>
         <a href="support" class="menu-item" id="supportburger">
             <img src="icons/support.png" alt="Поддержка">
             Поддержать
@@ -133,4 +117,5 @@ document.addEventListener('DOMContentLoaded', function() {
             header.classList.remove('header-narrow');
         }
     });
+
 });
