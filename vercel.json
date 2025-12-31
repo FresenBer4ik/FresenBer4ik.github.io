@@ -7,27 +7,21 @@
       "destination": "/index.html"
     },
     {
-      "source": "/404",
-      "destination": "/404.html"
-    },
-    {
       "source": "/games",
       "destination": "/games.html"
-    },
-    {
-      "source": "/reinstall-windows",
-      "destination": "/reinstall-windows.html"
     },
     {
       "source": "/windows",
       "destination": "/windows.html"
     },
     {
-      "source": "/:path",
-      "destination": "/:path.html"
+      "source": "/reinstall-windows",
+      "destination": "/reinstall-windows.html"
+    },
+    {
+      "source": "/404",
+      "destination": "/404.html",
+      "statusCode": 404
     }
-  ],
-  "errorRoutes": [
-    { "src": "/404", "status": 404, "dest": "/404.html" }
   ]
 }
