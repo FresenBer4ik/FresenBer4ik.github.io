@@ -3,6 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const snowToggle = document.getElementById('snowToggle');
     const snowStatus = document.querySelector('.snow-status');
     const snowContainer = document.getElementById('snowflakes-container');
+    
+    // --- ИЗМЕНЕНИЕ: Принудительно ставим стили для переднего плана ---
+    if (snowContainer) {
+        snowContainer.style.position = 'fixed';
+        snowContainer.style.top = '0';
+        snowContainer.style.left = '0';
+        snowContainer.style.width = '100%';
+        snowContainer.style.height = '100%';
+        snowContainer.style.zIndex = '999999'; // Поверх всего
+        snowContainer.style.pointerEvents = 'none'; // Чтобы клики проходили сквозь снег
+        snowContainer.style.overflow = 'hidden';
+    }
+    // ----------------------------------------------------------------
+
     let snowInterval;
     let isSnowing = false;
     let snowflakes = [];
@@ -11,24 +25,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedSnowState = localStorage.getItem('edvardcode_snow');
     if (savedSnowState === 'true') {
         startSnow();
-        snowToggle.classList.add('active');
-        snowStatus.textContent = 'Вкл';
+        if(snowToggle) snowToggle.classList.add('active'); // Проверка на существование кнопки
+        if(snowStatus) snowStatus.textContent = 'Вкл';
     }
 
-    // Обработчик кнопки
-    snowToggle.addEventListener('click', function() {
-        if (isSnowing) {
-            stopSnow();
-            snowToggle.classList.remove('active');
-            snowStatus.textContent = 'Выкл';
-            localStorage.setItem('edvardcode_snow', 'false');
-        } else {
-            startSnow();
-            snowToggle.classList.add('active');
-            snowStatus.textContent = 'Вкл';
-            localStorage.setItem('edvardcode_snow', 'true');
-        }
-    });
+    // Обработчик кнопки (проверка на случай, если кнопки нет на странице)
+    if (snowToggle) {
+        snowToggle.addEventListener('click', function() {
+            if (isSnowing) {
+                stopSnow();
+                snowToggle.classList.remove('active');
+                if(snowStatus) snowStatus.textContent = 'Выкл';
+                localStorage.setItem('edvardcode_snow', 'false');
+            } else {
+                startSnow();
+                snowToggle.classList.add('active');
+                if(snowStatus) snowStatus.textContent = 'Вкл';
+                localStorage.setItem('edvardcode_snow', 'true');
+            }
+        });
+    }
 
     function createSnowflake() {
         if (!isSnowing) return;
@@ -36,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
         
+        // --- ИЗМЕНЕНИЕ: Обязательно absolute для позиционирования ---
+        snowflake.style.position = 'absolute'; 
+        snowflake.style.borderRadius = '50%'; // Делаем их круглыми
+        // -----------------------------------------------------------
+
         // Случайный размер от 3 до 10px
         const size = Math.random() * 7 + 3;
         snowflake.style.width = `${size}px`;
@@ -58,36 +79,37 @@ document.addEventListener('DOMContentLoaded', function() {
             sway ${duration * 2}s ease-in-out infinite
         `;
         
-        // CSS для анимации
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                0% {
-                    top: -50px;
-                    transform: rotate(0deg);
-                }
-                100% {
-                    top: 100vh;
-                    transform: rotate(360deg);
-                }
-            }
-            @keyframes sway {
-                0%, 100% {
-                    transform: translateX(0) rotate(0deg);
-                }
-                50% {
-                    transform: translateX(${sway}px) rotate(180deg);
-                }
-            }
-        `;
-        
+        // CSS для анимации (добавляем один раз)
         if (!document.getElementById('snow-animations')) {
+            const style = document.createElement('style');
             style.id = 'snow-animations';
+            style.textContent = `
+                @keyframes fall {
+                    0% {
+                        top: -50px;
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        top: 100vh;
+                        transform: rotate(360deg);
+                    }
+                }
+                @keyframes sway {
+                    0%, 100% {
+                        transform: translateX(0) rotate(0deg);
+                    }
+                    50% {
+                        transform: translateX(${sway}px) rotate(180deg);
+                    }
+                }
+            `;
             document.head.appendChild(style);
         }
         
-        snowContainer.appendChild(snowflake);
-        snowflakes.push(snowflake);
+        if (snowContainer) {
+            snowContainer.appendChild(snowflake);
+            snowflakes.push(snowflake);
+        }
         
         // Удаляем снежинку после падения
         setTimeout(() => {
