@@ -4,19 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const snowStatus = document.querySelector('.snow-status');
     const snowContainer = document.getElementById('snowflakes-container');
     
-    // --- ИЗМЕНЕНИЕ: Принудительно ставим стили для переднего плана ---
-    if (snowContainer) {
-        snowContainer.style.position = 'fixed';
-        snowContainer.style.top = '0';
-        snowContainer.style.left = '0';
-        snowContainer.style.width = '100%';
-        snowContainer.style.height = '100%';
-        snowContainer.style.zIndex = '999999'; // Поверх всего
-        snowContainer.style.pointerEvents = 'none'; // Чтобы клики проходили сквозь снег
-        snowContainer.style.overflow = 'hidden';
-    }
-    // ----------------------------------------------------------------
-
     let snowInterval;
     let isSnowing = false;
     let snowflakes = [];
@@ -178,3 +165,4 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', checkPerformance);
     checkPerformance();
 });
+
