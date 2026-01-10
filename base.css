@@ -496,7 +496,7 @@ footer {
     position: fixed;
     bottom: 25px;
     left: 25px;
-    z-index: 1000;
+    z-index: 999999;
 }
 
 #snowToggle {
